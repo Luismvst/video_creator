@@ -42,7 +42,7 @@ Que cada plano y cada export **herede** contexto validado (letra, tiempo, secci�
 ## Context
 
 - Nicho inicial: cantautor, letras muy visuales y narrativas poéticas.
-- Stack acordado (MVP): **Next.js (React, TS, Tailwind, shadcn/ui)** + **FastAPI (Pydantic, SQLModel/SQLAlchemy)** + SQLite dev / Postgres prod + workers para análisis de audio + SSE/WebSocket para progreso; **ffmpeg + librosa**; prompts LLM versionados fuera del código (`/prompts`).
+- Stack acordado (MVP): **Next.js (React, TS, Tailwind)** + **FastAPI (Pydantic, SQLModel/SQLAlchemy)** + SQLite dev / Postgres prod + workers para análisis de audio + SSE/WebSocket para progreso; **ffmpeg + librosa**; prompts LLM versionados fuera del código (`/prompts`). **shadcn/ui** puede incorporarse al pulir UI de fases posteriores.
 - **2026-05-13:** Implementado **Fase 1** en repo: `backend/` (FastAPI, SQLite bajo `backend/data/`) y `frontend/` (Next.js App Router, Song Setup, lista de proyectos, gate OPS-01 + stub `POST /projects/{id}/analysis/enqueue`). Ver [README.md](../README.md).
 - Decisiones pendientes de producto: ver §13 en [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md).
 
