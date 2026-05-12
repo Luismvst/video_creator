@@ -1,0 +1,14 @@
+# Local overrides
+.env.local
+.next/
+node_modules/
+
+# Backend
+backend/.venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/data/
+
+# OS
+.DS_Store
+Thumbs.db

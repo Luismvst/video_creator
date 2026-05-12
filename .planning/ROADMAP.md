@@ -6,7 +6,7 @@ Construir VideoZero como **slice vertical** repetible: desde proyecto + ingest h
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & vertical slice shell** — Monorepo, app shell, proyecto, ingest básico, gate legal audio
+- [x] **Phase 1: Foundation & vertical slice shell** — Monorepo, app shell, proyecto, ingest básico, gate legal audio
 - [ ] **Phase 2: Audio & lyrics analysis** — Jobs async, resultados estructurados, UI de revisión
 - [ ] **Phase 3: Alignment & creative direction** — Tabla letra–tiempo, intake creativo, cuestionario director, Creative Lock
 - [ ] **Phase 4: Visual bible & treatment** — Documentos generados y preview/export Markdown
@@ -35,9 +35,9 @@ Construir VideoZero como **slice vertical** repetible: desde proyecto + ingest h
 
 Plans:
 
-- [ ] 01-01: Bootstrap monorepo (Next.js + FastAPI), lint/format mínimo, variables de entorno
-- [ ] 01-02: Modelo de datos proyecto/canción + API REST + SQLite
-- [ ] 01-03: UI shell: pasos “Song Setup” + upload + formulario metadata + checkbox OPS-01
+- [x] 01-01: Bootstrap monorepo (Next.js + FastAPI), lint/format mínimo, variables de entorno
+- [x] 01-02: Modelo de datos proyecto/canción + API REST + SQLite
+- [x] 01-03: UI shell: pasos “Song Setup” + upload + formulario metadata + checkbox OPS-01
 
 ### Phase 2: Audio & lyrics analysis
 
@@ -163,7 +163,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & vertical slice shell | 0/TBD | Not started | - |
+| 1. Foundation & vertical slice shell | 3/3 | Complete | 2026-05-13 |
 | 2. Audio & lyrics analysis | 0/TBD | Not started | - |
 | 3. Alignment & creative direction | 0/TBD | Not started | - |
 | 4. Visual bible & treatment | 0/TBD | Not started | - |

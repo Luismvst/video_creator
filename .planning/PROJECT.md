@@ -43,6 +43,7 @@ Que cada plano y cada export **herede** contexto validado (letra, tiempo, secci�
 
 - Nicho inicial: cantautor, letras muy visuales y narrativas poéticas.
 - Stack acordado (MVP): **Next.js (React, TS, Tailwind, shadcn/ui)** + **FastAPI (Pydantic, SQLModel/SQLAlchemy)** + SQLite dev / Postgres prod + workers para análisis de audio + SSE/WebSocket para progreso; **ffmpeg + librosa**; prompts LLM versionados fuera del código (`/prompts`).
+- **2026-05-13:** Implementado **Fase 1** en repo: `backend/` (FastAPI, SQLite bajo `backend/data/`) y `frontend/` (Next.js App Router, Song Setup, lista de proyectos, gate OPS-01 + stub `POST /projects/{id}/analysis/enqueue`). Ver [README.md](../README.md).
 - Decisiones pendientes de producto: ver §13 en [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md).
 
 ## Constraints
@@ -59,6 +60,7 @@ Que cada plano y cada export **herede** contexto validado (letra, tiempo, secci�
 | Shot como unidad atómica con herencia de contexto | Evita prompts aislados y collage. | — Pending |
 | Perfiles de proveedor por defecto Runway + Kling (además de genérico) | Cumple “≥2 proveedores” del master hasta que el usuario elija otros. | — Pending |
 | Documento maestro en repo `docs/VIDEOZERO-MASTER.md` | Una fuente para GSD y para el equipo. | ✓ Good |
+| Fase 1 monorepo Next+FastAPI en repo | Desbloquea ejecución sin depender solo de documentación. | ✓ Good |
 
 ## Evolution
 
@@ -81,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-*Last updated: 2026-05-13 after GSD project initialization from VIDEOZERO-MASTER.md*
+*Last updated: 2026-05-13 after Phase 1 implementation (monorepo + Song Setup)*
