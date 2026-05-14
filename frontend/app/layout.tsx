@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a href="/" className="text-lg font-semibold tracking-tight text-white">
               VideoZero
             </a>
-            <span className="text-xs text-[var(--vz-muted)]">Fase 1 · Song Setup</span>
+            <span className="text-xs text-[var(--vz-muted)]">Letra primero · Fase 1.5</span>
           </div>
         </header>
         <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>

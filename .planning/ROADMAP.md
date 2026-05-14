@@ -1,71 +1,86 @@
-# Roadmap: VideoZero
+# Roadmap: VideoZero (v1 · letra primero)
 
 ## Overview
 
-Construir VideoZero como **slice vertical** repetible: desde proyecto + ingest hasta export de treatment, biblia, timeline, shot list y prompt packs, con análisis asíncrono de audio y flujo guiado de dirección. Las fases siguen el modelo de datos y el pipeline de [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md); la integración con APIs de render de vídeo queda fuera de v1.
+Construir VideoZero como **director creativo guiado por la letra**: el MVP demuestra valor **sin audio obligatorio**, con **estructura de letra**, **dirección guiada**, **Creative Lock**, documentos (biblia + treatment), timeline anclada a **secciones de letra**, shot list y prompt packs exportables. El modo **Audio Pro** (DSP, BPM, onsets, curvas) queda explícitamente fuera del camino crítico hasta v2.
 
 ## Phases
 
-- [x] **Phase 1: Foundation & vertical slice shell** — Monorepo, app shell, proyecto, ingest básico, gate legal audio
-- [ ] **Phase 2: Audio & lyrics analysis** — Jobs async, resultados estructurados, UI de revisión
-- [ ] **Phase 3: Alignment & creative direction** — Tabla letra–tiempo, intake creativo, cuestionario director, Creative Lock
-- [ ] **Phase 4: Visual bible & treatment** — Documentos generados y preview/export Markdown
-- [ ] **Phase 5: Timeline, scenes & shot list** — Planificación editable en tablas
-- [ ] **Phase 6: Prompt compile, generation plan & export bundle** — Adaptadores Runway/Kling + checklist + paquete de export
+- [x] **Phase 1: Foundation & monorepo shell** — Repo ejecutable, proyecto, ingest inicial (hoy incluye audio opcional + gates legacy)
+- [x] **Phase 1.5: Lyrics-first alignment** — Gates, copy y modelo alineados con “letra obligatoria”, OPS separado, reloj por duración objetivo
+- [x] **Phase 2: Lyric structure & intelligence** — Secciones vinculadas a letra, pacing guiado, parsing + análisis LLM de letra (MVP en repo)
+- [x] **Phase 3: Optional timing & creative direction** — Campos JSON + intake/rutas + Creative Lock (MVP)
+- [x] **Phase 4: Visual bible & treatment** — Preview Markdown + plantillas (MVP)
+- [x] **Phase 5: Timeline, scenes & shot list** — Campos `timeline_plan_json` / `scenes_json` / `shots_json` + UI JSON (editor visual dedicado → backlog)
+- [x] **Phase 6: Prompt compile, generation plan & export bundle** — Compile + bundle.md + prompts + shots.json/csv (MVP)
 
 ## Phase Details
 
-### Phase 1: Foundation & vertical slice shell
+### Phase 1: Foundation & monorepo shell
 
-**Goal:** Repositorio ejecutable (frontend + API), persistencia mínima de proyecto, subida de audio y letra, metadata, y confirmación de derechos antes de análisis pesado.
+**Goal:** Monorepo Next + FastAPI + persistencia mínima; pantalla inicial de proyecto; ingest temprano (incluye audio opcional heredado de la primera iteración).
 
-**Depends on:** Nothing (first phase)
+**Depends on:** Nothing
 
-**Requirements:** PROJ-01, PROJ-02, ING-01, ING-02, ING-03, OPS-01
+**Requirements (original slice):** PROJ-01, PROJ-02, ING-02 (audio path), ING-03, OPS parcial
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
+**Success Criteria:**
 
-1. Un desarrollador puede levantar frontend y API con instrucciones en README y ver health checks OK.
-2. El usuario puede crear un proyecto, adjuntar audio y letra, rellenar metadata y guardar; al recargar, los datos siguen ahí.
-3. Sin marcar la confirmación de derechos del audio, no se encola análisis pesado (comportamiento observable en API o UI).
+1. Dev puede levantar API + web con README.
+2. Crear proyecto y persistir datos básicos.
+3. *(Legacy)* Gate de análisis asociado a audio — será reemplazado por **Phase 1.5**.
 
-**Plans:** TBD (refinar en `/gsd-plan-phase 1`)
+**Plans:**
 
-Plans:
+- [x] 01-01: Bootstrap monorepo
+- [x] 01-02: Modelo proyecto/canción + API + SQLite
+- [x] 01-03: UI “setup” inicial + upload opcional
 
-- [x] 01-01: Bootstrap monorepo (Next.js + FastAPI), lint/format mínimo, variables de entorno
-- [x] 01-02: Modelo de datos proyecto/canción + API REST + SQLite
-- [x] 01-03: UI shell: pasos “Song Setup” + upload + formulario metadata + checkbox OPS-01
+### Phase 1.5: Lyrics-first alignment (INSERTED)
 
-### Phase 2: Audio & lyrics analysis
-
-**Goal:** Pipeline de análisis de audio (librosa/ffmpeg) y análisis de letra (LLM o pipeline inicial) con progreso y resultados consultables.
+**Goal:** El producto en repo refleja el mantra: **letra obligatoria**, **audio opcional**, **OPS** separado (letra vs audio si hay archivo), **duración objetivo** opcional; el stub de pipeline exige derechos de letra + letra no vacía.
 
 **Depends on:** Phase 1
 
-**Requirements:** ANA-01, ANA-02, ANA-03, LYR-01, LYR-02
+**Requirements:** ING-01, ING-04, OPS-01, OPS-02 (+ ajustes de ING-02/03 según UI)
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
+**Success Criteria:**
 
-1. Tras upload válido y confirmación OPS-01, se lanza job async y la UI muestra progreso hasta completado o error.
-2. Los resultados incluyen duración, BPM aproximado, segmentos tentativos y curva de energía accesibles vía API/UI.
-3. La letra queda en líneas/blocks ordenados y el usuario puede corregir el parseo básico en UI si aplica.
+1. No se puede marcar “listo para pipeline” sin **letra** y sin **OPS-01**.
+2. Si hay archivo de audio, **OPS-02** aparece y es obligatorio antes de procesar audio (ffprobe/jobs futuros).
+3. El usuario puede fijar **duración objetivo** sin subir audio.
 
-**Plans:** TBD
+**Plans:**
 
-Plans:
+- [x] 01.5-01: Modelo/API/UI — `target_duration_seconds`, `lyrics_rights_confirmed`, copy OPS
+- [x] 01.5-02: Stub `analysis/enqueue` → gate “letra primero” (y audio si aplica)
+- [x] 01.5-03: README + strings UI alineados al posicionamiento
 
-- [ ] 02-01: Worker + cola + endpoint de job + SSE/WebSocket de progreso
-- [ ] 02-02: Integración librosa/ffmpeg y persistencia de features
-- [ ] 02-03: Pipeline letra + prompts versionados en `/prompts` (repo) para extracción de motifs
+### Phase 2: Lyric structure & intelligence
 
-### Phase 3: Alignment & creative direction
+**Goal:** Secciones de letra editables + pacing guiado + pipeline LLM de análisis de letra.
 
-**Goal:** Tabla editable letra–tiempo; intake de referencias traducido a atributos; cuestionario de director; rutas creativas y **Creative Lock** versionado.
+**Depends on:** Phase 1.5
+
+**Requirements:** STR-01, STR-02, LYR-01, LYR-02
+
+**Mode:** mvp
+
+**Success Criteria:**
+
+1. Secciones enlazan a bloques/líneas y se reflejan en API.
+2. Parsing de letra + sugerencias editables en UI.
+3. Pacing elegido condiciona defaults del planner (sin DSP).
+
+**Plans:** MVP shipped in application code (2026-05-13); formal plan files TBD if you re-open the phase for polish.
+
+### Phase 3: Optional timing & creative direction
+
+**Goal:** Tabla de tiempos opcional; intake; cuestionario; rutas; Creative Lock.
 
 **Depends on:** Phase 2
 
@@ -73,23 +88,9 @@ Plans:
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
-
-1. El usuario puede ajustar start/end por línea y ver preview temporal simple (o números validados) sin romper el modelo.
-2. Las respuestas del cuestionario y del intake quedan persistidas y alimentan constraints versionados.
-3. Hasta que no exista “lock”, la fase de generación masiva de planos no está disponible (gating claro en UI o API).
-
-**Plans:** TBD
-
-Plans:
-
-- [ ] 03-01: UI tabla alineación + validación de solapes / orden
-- [ ] 03-02: Persistencia CreativeSession + motor de preguntas (config-driven)
-- [ ] 03-03: Rutas creativas + acción “Lock direction” con snapshot
+**Plans:** MVP (JSON fields + lock endpoints + UI tabs); dedicated timing grid UI → backlog.
 
 ### Phase 4: Visual bible & treatment
-
-**Goal:** Generar Visual Bible y Treatment exportables desde el lock y datos estructurados.
 
 **Depends on:** Phase 3
 
@@ -97,21 +98,9 @@ Plans:
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
-
-1. Con un proyecto de demo bloqueado, el sistema produce Markdown de biblia y treatment coherentes con las respuestas guardadas.
-2. El usuario puede previsualizar y editar texto en UI antes de marcar como “final para export” (versión ligera).
-
-**Plans:** TBD
-
-Plans:
-
-- [ ] 04-01: Schemas de salida + prompts `visual_bible` / `treatment`
-- [ ] 04-02: UI preview Markdown + diff vs última versión
+**Plans:** MVP (`GET …/documents/preview`, exports in bundle).
 
 ### Phase 5: Timeline, scenes & shot list
-
-**Goal:** Timeline por secciones, scene cards y shot list derivados y editables en tablas.
 
 **Depends on:** Phase 4
 
@@ -119,23 +108,9 @@ Plans:
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
-
-1. Cada bloque de timeline referencia líneas/letra y secciones musicales de forma trazable.
-2. Escenas enlazan bloques y referencias a biblia (localización/personajes).
-3. Shot list editable: timestamps, cámara, acción, continuidad, criterios de revisión visibles por fila.
-
-**Plans:** TBD
-
-Plans:
-
-- [ ] 05-01: Timeline planner (LLM o reglas) + UI bloques
-- [ ] 05-02: Scene planner + vínculos
-- [ ] 05-03: Shot list generator + grid edit
+**Plans:** MVP (persisted JSON + Plan tab); visual timeline anchored to sections → backlog.
 
 ### Phase 6: Prompt compile, generation plan & export bundle
-
-**Goal:** Compilador genérico + Runway + Kling; plan de generación; checklist y matriz; export Markdown/CSV/JSON/prompt packs.
 
 **Depends on:** Phase 5
 
@@ -143,29 +118,18 @@ Plans:
 
 **Mode:** mvp
 
-**Success Criteria** (what must be TRUE):
-
-1. Para cada shot, existen al menos tres salidas de texto: generic, Runway, Kling, derivadas del mismo canon interno.
-2. El usuario obtiene generation plan + checklist + CSV de revisión descargables.
-3. Un “Export bundle” descarga o lista archivos coherentes con los nombres acordados en el master doc §12.
-
-**Plans:** TBD
-
-Plans:
-
-- [ ] 06-01: `ShotPromptInput` canónico + perfiles proveedor
-- [ ] 06-02: Generation plan + checklist + review matrix export
-- [ ] 06-03: Zip o carpeta de export unificada + prueba E2E con canción demo
+**Plans:** MVP (`export/bundle.md`, `export/prompts.md`, `export/shots.json`, `export/shots.csv`).
 
 ## Progress
 
-**Execution Order:** Phases 1 → 2 → 3 → 4 → 5 → 6
+**Execution Order:** 1 → 1.5 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & vertical slice shell | 3/3 | Complete | 2026-05-13 |
-| 2. Audio & lyrics analysis | 0/TBD | Not started | - |
-| 3. Alignment & creative direction | 0/TBD | Not started | - |
-| 4. Visual bible & treatment | 0/TBD | Not started | - |
-| 5. Timeline, scenes & shot list | 0/TBD | Not started | - |
-| 6. Prompt compile & export bundle | 0/TBD | Not started | - |
+| 1. Foundation & monorepo shell | 3/3 | Complete | 2026-05-13 |
+| 1.5 Lyrics-first alignment | 3/3 | Complete | 2026-05-13 |
+| 2. Lyric structure & intelligence | MVP | Complete (code) | 2026-05-13 |
+| 3. Optional timing & creative direction | MVP | Complete (code) | 2026-05-13 |
+| 4. Visual bible & treatment | MVP | Complete (code) | 2026-05-13 |
+| 5. Timeline, scenes & shot list | MVP (JSON) | Complete (code) | 2026-05-13 |
+| 6. Prompt compile & export bundle | MVP | Complete (code) | 2026-05-13 |

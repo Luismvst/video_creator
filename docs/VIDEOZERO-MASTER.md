@@ -1,228 +1,151 @@
-# VideoZero — Documento maestro de producto (v0.2)
+# VideoZero — Documento maestro de producto (v1 · **letra primero**)
 
-> **Propósito:** Base única para visión, MVP, arquitectura, flujo creativo, modelo de datos, riesgos y siguiente paso GSD. Sustituye/condensa el mega-prompt inicial en algo accionable.
+> **Mantra:** *VideoZero es un director creativo guiado por la letra.*  
+> **Propósito:** Base única para visión, MVP, arquitectura, flujo creativo, modelo de datos, riesgos y GSD.
 
 ---
 
-## 0. Diagnóstico del prompt original (sin perder intención)
+## 0. Qué cambia respecto a v0.x
 
-| Área | Qué funcionaba | Qué diluía el foco |
-|------|----------------|-------------------|
-| **Visión** | Pipeline Song → … → Edit claro; “la unidad no es el prompt” | Mezcla rol de 10 expertos con backlog de 16 módulos en un solo bloque |
-| **MVP** | “Sin API de vídeo día 1” bien acotado | Lista de exportables larga sin prioridad ni orden de lectura |
-| **Arquitectura** | Stack razonable (Next + FastAPI) | Módulos numerados como si ya existieran; falta contrato entre capas |
-| **Creativo** | Coherencia letra/música/emoción | Poco explícito sobre *anti-collage* y revisión humana |
-| **Legal** | Mención de riesgos | Sin políticas operativas (referencias, estilo de terceros, contenido sensible) |
-| **Datos** | Alineación línea–timestamp | Sin esquema conceptual único de entidades |
-
-**Decisiones implícitas a explicitar:** idioma del producto vs idioma de la canción; si el usuario edita siempre antes de “congelar” dirección; qué es obligatorio vs opcional en v1; límites de duración/tamaño de audio.
+| Antes (v0.x) | Ahora (v1) |
+|----------------|------------|
+| “Canción + audio” como narrativa central | **Letra** como fuente de verdad creativa; audio **opcional** para refinar tiempo, no para arrancar el producto |
+| Fase 2 = análisis DSP prioritario | **Inteligencia de letra + estructura + dirección** primero; **análisis musical pesado (BPM, onsets, curvas)** = **post-MVP / modo Pro** |
+| OPS centrado en pista | **Declaración de derechos sobre la letra** (obligatoria antes de generar documentos/planos); derechos de **audio** solo si hay archivo |
 
 ---
 
 ## 1. North Star
 
-**VideoZero** guía a músicos y creadores no técnicos desde **canción + letra (+ referencias opcionales)** hasta un **paquete de producción coherente**: interpretación, dirección creativa, biblia visual, timeline, escenas/planos, prompts por proveedor, plan de generación y plan de montaje — sin tratar cada plano como un prompt aislado.
+**VideoZero** guía al usuario desde la **letra** (y metadata mínima) hasta un **paquete de dirección coherente** para videoclips con IA: interpretación, preguntas de director, rutas creativas, biblia visual, treatment, timeline anclada a **bloques de letra y secciones**, escenas, shot list, prompts por proveedor, plan de generación y revisión — **sin** tratar cada plano como un prompt aislado.
 
-**No promete en v1:** render automático de videoclip completo vía API unificada.
+**Audio:** opcional. Si existe, sirve para **duración**, referencia de “feel” y (más adelante) sincronía; **no** es requisito del camino feliz.
 
-**Sí promete en v1:** reducir caos y collage; hacer que cada plano **herede** contexto superior (letra, sección, tiempo, emoción, reglas de continuidad, proveedor objetivo).
+**No promete en v1:** render por API; análisis DSP completo; alineación letra–voz perfecta.
+
+**Sí promete en v1:** coherencia narrativa/visual **nacida de la letra** y de las decisiones de dirección capturadas; exports útiles para Runway/Veo/Kling/etc.
 
 ---
 
 ## 2. Usuario y caso de uso inicial
 
-- **Primario:** cantautor / letras muy visuales, narrativa poética, imágenes recurrentes (carretera, memoria, ciudad, etc.).
-- **Secundario (post-MVP):** productor que quiere treatment + shot list para equipo externo.
+- **Primario:** cantautor / letras muy visuales; el videoclip debe “leer” la letra, no decorarla con clips random.
+- **Secundario:** equipo que recibe **treatment + shot list + prompt packs** sin entrar en la app.
 
-**Éxito observable (MVP):** en una sesión el usuario puede (1) subir audio + letra, (2) revisar/alinear líneas con tiempo, (3) completar un flujo guiado de dirección, (4) exportar al menos **treatment + biblia visual + shot list + prompt pack** listos para llevar a Runway/Veo/etc. manualmente.
-
----
-
-## 3. Principio de producto (invariantes)
-
-1. **La unidad atómica no es “un prompt”.** Es un **Shot** anclado a jerarquía: Song → Section → Scene → Shot.
-2. **Nada downstream sin inputs validados:** letra estructurada + ventana temporal mínima + decisiones de dirección congeladas (versionadas).
-3. **Referencias → atributos**, nunca copia literal de obra/artista identificable en prompts finales.
-4. **Humano en el circuito:** alineación letra–audio editable; aprobación de “ruta creativa” antes de explosión de planos.
+**Éxito observable (MVP):** en una sesión el usuario puede (1) crear proyecto y pegar letra, (2) definir o revisar **estructura** (secciones / bloques), (3) completar **dirección guiada** y bloquear “Creative Lock”, (4) exportar **treatment + biblia + timeline + shot list + prompts** sin haber subido audio (opcional).
 
 ---
 
-## 4. MVP (v1) — alcance cerrado
+## 3. Principios (invariantes)
 
-### 4.1 Incluye
-
-| # | Entregable / capacidad | Notas |
-|---|------------------------|--------|
-| 1 | Proyecto / workspace por canción | Versionado ligero de “snapshots” de dirección |
-| 2 | Ingesta: audio + letra (pegar/subir) + metadata básica | Título, artista, idioma, mood objetivo |
-| 3 | Análisis de audio **heurístico** | Duración, BPM aprox, onsets, energía por tramo, segmentación tentativa, curva de intensidad |
-| 4 | Análisis de letra | Líneas, bloques, imágenes/símbolos/lugares/personajes, lecturas interpretativas (propuestas, no dogma) |
-| 5 | **Alineación letra ↔ tiempo** | Tabla editable: `line_id`, texto, start, end, section, intensity, notas |
-| 6 | Agente de **investigación creativa** (preguntas + referencias) | Traducción a atributos estéticos |
-| 7 | **Director Decision Engine** | Preguntas guiadas, opciones concretas, todo persistido como constraints |
-| 8 | **Rutas creativas** (varias) + elección o mezcla | A/B/C… con trade-offs en lenguaje natural |
-| 9 | **Visual Bible** + **Treatment** | Documentos exportables |
-| 10 | **Timeline por secciones** + **Scene cards** | Bloques con letra asociada, emoción, objetivo narrativo, transiciones |
-| 11 | **Shot list** + **prompts por plano** + **Prompt Compiler** | Perfil genérico + ≥2 proveedores concretos en v1 (elegir cuáles en decisión pendiente) |
-| 12 | **Generation plan** + **checklist** + **matriz de revisión** | Orden sugerido, dependencias, criterios PASS/FAIL por plano |
-| 13 | **Export engine** | Prioridad v1: `markdown` + `json` + `csv` shot list + `prompt_pack` por proveedor seleccionado |
-
-### 4.2 Fuera de v1 (explícito)
-
-- EDL / FCPXML / Premiere / Resolve (roadmap).
-- Generación de vídeo por API desde la app.
-- Alineación automática “perfecta” letra–voz (solo asistida + manual).
-- Colaboración multiusuario en tiempo real.
-
-### 4.3 Criterios de utilidad del MVP
-
-- Un plano puede reconstruirse **solo leyendo** Visual Bible + Scene + línea asociada + timestamp.
-- El usuario puede explicar el videoclip a un tercero usando solo **treatment + timeline**.
-- La shot list es importable mentalmente en hoja de cálculo (CSV limpio, columnas estables).
+1. **La letra manda.** Preguntas, rutas, biblia y timeline deben poder justificarse citando **líneas o bloques**.
+2. **La unidad atómica sigue siendo el Shot**, pero hereda de **Line / Block / Section / CreativeLock / VisualBible**, no de un prompt suelto.
+3. **Reloj del proyecto:** (a) duración objetivo **manual** (segundos o “corto/medio/largo”) y/o (b) audio opcional con **duración por ffprobe** en fase ligera; **no** exigir BPM/onsets en v1.
+4. **Referencias → atributos**; nunca copiar obra o artista identificable en prompts finales.
+5. **Humano en el circuito:** edición de estructura de letra, lock explícito antes de explosión de planos.
 
 ---
 
-## 5. Flujo de usuario (UX guiada)
+## 4. MVP (v1) — alcance
 
-Fases sugeridas en UI (nombres internos):
+### Incluye
 
-1. **Song Setup** — audio, letra, metadata.
-2. **Structure** — revisar segmentación audio + bloques de letra.
-3. **Align** — tabla línea–tiempo (asistencia opcional).
-4. **Creative Intake** — referencias y “vibes” (traducidos a atributos).
-5. **Direction** — preguntas + rutas creativas + congelar “Creative Lock”.
-6. **Plan** — timeline → escenas → shot list (editable tipo tabla).
-7. **Prompts** — compilar por proveedor; ver diff vs biblia.
-8. **Generate & Review** — checklist + matriz (assets subidos manualmente o links).
-9. **Export** — paquete zip o lista de archivos.
+| # | Capacidad |
+|---|-----------|
+| 1 | Workspace por proyecto de videoclip |
+| 2 | **Letra** obligatoria (pegar/subir); **audio** opcional |
+| 3 | Metadata básica (título, artista, idioma, mood) |
+| 4 | **Estructura**: secciones vinculadas a bloques/líneas (editable) |
+| 5 | **Reloj**: `target_duration_seconds` opcional (usuario) + si hay audio, duración detectada (ffprobe, fase ligera) |
+| 6 | Análisis de letra: líneas/bloques, imágenes, símbolos, lecturas interpretativas (LLM asistido, editable) |
+| 7 | Alineación **opcional** línea ↔ tiempo (si el usuario tiene timestamps; si no, posición relativa a sección) |
+| 8 | Intake creativo + motor de dirección + rutas + **Creative Lock** |
+| 9 | Visual Bible + Treatment |
+| 10 | Timeline por **secciones de letra** + scene cards + shot list |
+| 11 | Prompt compiler (genérico + Runway + Kling por defecto) |
+| 12 | Generation plan + checklist + matriz de revisión |
+| 13 | Export Markdown / CSV / JSON / prompt packs |
+| 14 | **OPS:** confirmación de derechos sobre **letra** antes de pipeline generativo; si hay audio, confirmación adicional antes de cualquier procesamiento de archivo de audio |
+
+### Fuera de v1 (explícito)
+
+- BPM/onsets/segmentación automática “científica”, curvas de energía densas (roadmap **Audio Pro**).
+- Render vídeo por API unificado.
+- EDL/FCPXML (roadmap).
+- Colaboración realtime.
 
 ---
 
-## 6. Arquitectura lógica (módulos con contratos)
+## 5. Flujo UX (letra primero)
+
+1. **Letra & metadata** — pegar letra, metadata, declaración derechos letra.  
+2. **Estructura** — secciones ↔ bloques/líneas.  
+3. **Reloj** — duración objetivo (opcional); audio opcional + derechos si aplica.  
+4. **Intake creativo** — referencias → atributos.  
+5. **Dirección** — preguntas + rutas + **Lock**.  
+6. **Plan** — timeline → escenas → shots (tablas).  
+7. **Prompts** — compilar por proveedor.  
+8. **Revisión & export**.
+
+---
+
+## 6. Arquitectura lógica
 
 ```
-Ingest → AudioAnalysis + LyricsAnalysis → AlignmentStore
-    → CreativeResearch + DirectorDecisions (versioned)
-        → CreativeDirection + VisualBible + Treatment
-            → TimelinePlanner → ScenePlanner → ShotListGenerator
-                → PromptCompiler(provider) → GenerationPlan + ReviewMatrix
-                    → ExportEngine
+Ingest (lyrics required, audio optional)
+  → StructureEngine (sections ↔ lyric blocks)
+  → LyricsAnalysis (LLM, /prompts versionados)
+  → Optional: LightAudio (ffprobe duration only, if file)
+  → CreativeResearch + DirectorDecisions (versioned)
+      → VisualBible + Treatment
+          → TimelinePlanner (lyric/section clock)
+          → ScenePlanner → ShotList
+              → PromptCompiler(provider)
+                  → GenerationPlan + ReviewMatrix → Export
 ```
 
-- **Analysis** no llama a LLM con prompts gigantes embebidos: lee `/prompts` versionados (id, version, purpose, input/output schema, ejemplos).
-- **Planning** consume solo schemas validados (Pydantic/TS types espejo).
-- **Compiler** es puro: `Shot + VisualBible + ProviderProfile → ProviderPrompt`.
+**Audio Pro branch (posterior):** librosa features, beat grid, energy curve → alimentan timeline como *sugerencias*, no como verdad única.
 
 ---
 
-## 7. Modelo conceptual de datos (mínimo viable)
+## 7. Modelo conceptual de datos (ajustes)
 
-| Entidad | Campos clave (conceptual) |
-|---------|---------------------------|
-| **Project** | id, name, created_at, locale |
-| **Song** | audio_uri, duration_s, bpm_est, language, genre_tags |
-| **LyricDocument** | raw_text, normalized_lines[] |
-| **LyricLine** | line_id, text, block_id, order |
-| **AudioSegment** | seg_id, start, end, label_tentative, energy |
-| **LineAlignment** | line_id, start, end, section_override, emotional_intensity, visual_notes |
-| **CreativeSession** | id, status (draft/locked), answers JSON, chosen_routes[] |
-| **VisualBible** | characters[], locations[], palette, camera_grammar, textures, continuity_rules, no_gos |
-| **Treatment** | markdown, summary_one_liner |
-| **TimelineBlock** | block_id, start, end, section, lyric_line_ids[], narrative_goal, primary_visual, in_transition, out_transition, edit_pace |
-| **Scene** | scene_id, timeline_block_ids[], mood, location_ref, character_refs[] |
-| **Shot** | shot_id, scene_id, t_start, t_end, duration_s, lyric_ref, action, subject, camera, lens_look, lighting, location, mood, continuity_constraints, provider_hint, prompt_core, negative_prompt, ref_assets[], review_criteria[] |
-| **PromptPack** | provider, shots[] compiled prompts |
-| **GenerationPlan** | ordered_steps[], dependencies, notes (i2v vs t2v) |
-| **ReviewItem** | shot_id, criteria_scores, prompt_variants[] |
-| **ExportBundle** | list of artifacts + checksum |
+- **Project**, **Song** (o **ClipWork**): `lyrics_text` requerido para pasar gates; `audio_*` opcional; `target_duration_seconds` opcional; `lyrics_rights_confirmed`, `audio_rights_confirmed` (solo relevante si hay audio).
+- **LyricSection**: id, orden, etiqueta (verso/estribillo/custom), `line_id` ranges o FK a bloques.
+- Resto (VisualBible, Treatment, Scene, Shot, PromptPack, …) como en v0.2, con timeline referenciando **secciones de letra** antes que “segmentos DSP”.
 
 ---
 
-## 8. Stack técnico (por fases, sin overengineering)
+## 8. Stack técnico
 
-**Fase A — MVP**
-
-- **Frontend:** Next.js, React, TypeScript, Tailwind, shadcn/ui, estado local (Zustand o equivalente), tablas editables, preview Markdown, export.
-- **Backend:** FastAPI, Pydantic, SQLModel/SQLAlchemy, SQLite (dev) / Postgres (prod), almacenamiento local (MVP) con interfaz para S3/R2 después.
-- **Workers:** cola async para análisis de audio (Celery/RQ/Arq/Dramatiq + Redis si hace falta).
-- **Tiempo real progreso:** SSE o WebSocket para jobs largos.
-- **Audio:** ffmpeg + librosa (normalización, BPM, onsets, energía, segmentación básica).
-
-**Fase B — post-MVP**
-
-- Separación stems (demucs/spleeter), Whisper/WhisperX solo como **asistencia** de alineación.
-- Capa `VideoProvider` (TypeScript o Python con contrato compartido vía OpenAPI + tipos generados).
+Sin cambio sustancial: Next.js + FastAPI + SQLite/Postgres + `/prompts` versionados. **Workers + librosa** se posponen al modo Audio Pro.
 
 ---
 
-## 9. Capa de proveedores de vídeo (futuro cercano)
+## 9. Riesgos y calidad
 
-Interfaz lógica (lenguaje agnóstico):
-
-- `name`, `capabilities` (duración max, i2v, t2v, referencia personaje, etc.)
-- `compilePrompt(ShotPromptInput) → ProviderPrompt`
-- Opcional: `submitGeneration`, `getJobStatus`, `downloadResult`
-
-**Regla:** el núcleo del producto solo conoce **ShotPromptInput** canónico; cada proveedor es un adaptador.
+- **Letra ajena / copyright:** OPS explícito; no asumir licencia.
+- **Audio opcional:** reduce superficie legal, no la elimina si el usuario sube samples.
+- **Anti-collage:** cada escena cita ancla de letra o decisión de lock; límite de planos por sección.
 
 ---
 
-## 10. Riesgos legales y creativos (operativos)
+## 10. Decisiones pendientes
 
-1. **Música:** el usuario declara derechos o uso autorizado; la app no asume licencia; opcional: checkbox + texto legal corto.
-2. **Imagen/personas:** consentimiento explícito si fotos de personas reales; no deepfake de terceros sin permiso.
-3. **Referencias:** UI copy claro — “inspiración en estilo” ≠ copiar obra reconocible; el compilador debe **sustituir nombres propios** por descriptores (iluminación, grain, lente, paleta).
-4. **Contenido sensible:** políticas de rechazo/soft-warning en narrativas violentas, menores, etc. (definir lista mínima v1).
-5. **Salida de modelos:** watermark/terms del proveedor; no revender prompts como “plantillas oficiales” de terceros.
-
----
-
-## 11. Calidad, coherencia y anti-collage
-
-**Reglas de generación (para LLM interno):**
-
-- Cada escena debe citar **al menos una ancla** (línea de letra, golpe musical, o decisión de dirección).
-- Máximo N planos por bloque temporal (N configurable; default conservador).
-- **Continuidad:** lista explícita “must match previous shot” cuando aplique.
-- **Variación controlada:** cambios de look solo en puntos de inflexión musicales o narrativos acordados.
-
-**Matriz de revisión (ejemplo de criterios por plano):**
-
-- Coherencia letra / Coherencia biblia / Continuidad personaje / Movimiento / Emoción / Utilidad en montaje / Artefactos IA.
+1. ¿Renombrar entidad `Song` → `ClipWork` / `LyricProject` en código (cosmético + claridad)?
+2. ¿Un solo checkbox legal vs letra/audio separados? (v1 recomienda **separados** si hay audio.)
+3. Idioma UI / treatment bilingüe.
+4. Límites de tamaño si se mantiene upload opcional.
 
 ---
 
-## 12. Exportaciones — prioridad v1
+## 11. GSD — próximo trabajo
 
-| Artefacto | Formato |
-|-----------|---------|
-| Creative brief / preguntas | `.md` |
-| Visual bible | `.md` |
-| Treatment | `.md` |
-| Timeline | `.md` |
-| Shot list | `.csv` + `.json` |
-| Prompt packs | `.md` por proveedor + `json` opcional embebido |
-| Generation checklist + review matrix | `.md` + `.csv` |
-| Edit plan | `.md` |
+1. Actualizar `.planning/PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md` a esta línea.  
+2. Reordenar fases: **Lyrics & structure** antes que cualquier DSP.  
+3. Ajustar UI/API a gates “letra primero”.  
+4. `/gsd-plan-phase` según nuevo roadmap.
 
 ---
 
-## 13. Decisiones pendientes (para siguiente iteración contigo)
-
-1. **Idioma UI** por defecto y si el treatment puede bilingual automático.
-2. **Proveedores** concretos para los 2 perfiles del MVP además de “generic cinematic”.
-3. **Límite** de duración de canción y tamaño de archivo en v1.
-4. **Modelo de negocio** (local-only vs cloud) — afecta storage y LLM keys.
-5. **Nivel de literalidad** default (literal vs simbólico) y si se fuerza por sección.
-
----
-
-## 14. Próximo paso GSD (cuando quieras ejecutar herramientas)
-
-1. Ejecutar **`/gsd-new-project`** (o `--auto` pegando este doc) para generar `.planning/PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`.
-2. Opcional antes: **`/gsd-explore`** solo si quieres desbloquear decisiones de la §13 sin escribir código.
-3. Fase 1 recomendada en roadmap: **vertical slice** — un proyecto demo end-to-end con export real y tablas editables, sin integración API de vídeo.
-
----
-
-*Documento generado como iteración del master prompt inicial + plan de trabajo acordado. Versión v0.2.*
+*v1 · letra primero — 2026-05-13*

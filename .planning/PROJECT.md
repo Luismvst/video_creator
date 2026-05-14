@@ -2,65 +2,68 @@
 
 ## What This Is
 
-**VideoZero** es una aplicación que guía a músicos y creadores no técnicos desde **canción + letra (+ referencias opcionales)** hasta un **paquete de producción coherente** para videoclips con IA: interpretación, dirección creativa, biblia visual, treatment, timeline por secciones, escenas, shot list, prompts por proveedor (compilación, no render unificado), plan de generación, checklist y matriz de revisión. La unidad central del sistema es el **Shot** anclado a la jerarquía Song → Section → Scene → Shot, no un prompt suelto.
+**VideoZero** es un **director creativo guiado por la letra**: lleva al usuario desde la **letra** (obligatoria) y metadata mínima hasta un **paquete de dirección coherente** para videoclips con IA — interpretación, preguntas de director, rutas creativas, biblia visual, treatment, timeline anclada a **secciones y bloques de letra**, escenas, shot list, prompts por proveedor (compilación, no render unificado), plan de generación y revisión. **El audio es opcional**: refina tiempo y feel cuando existe; **no** define el arranque del flujo ni el valor mínimo del MVP.
 
-**Fuente de verdad de producto:** [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md) (v0.2).
+**Fuente de verdad de producto:** [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md) (v1 · letra primero).
 
 ## Core Value
 
-Que cada plano y cada export **herede** contexto validado (letra, tiempo, sección musical, emoción, biblia visual, reglas de continuidad y proveedor objetivo), de modo que el usuario pueda producir en herramientas externas (Runway, Veo/Flow, Kling, Luma, etc.) **sin collage incoherente**.
+Que cada plano y cada export **herede** contexto validado anclado en la **letra** y las **decisiones de dirección** (secciones, lock creativo, biblia, continuidad, proveedor objetivo), de modo que el usuario produzca en herramientas externas **sin collage incoherente** — con o sin pista de audio.
 
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] **Workspace por proyecto** — Detalle de proyecto + canción persistida; flujo en pestañas (Setup / Dirección / Plan / Export).
+- [x] **Letra obligatoria** + **audio opcional** + **OPS** (letra siempre; audio condicional si hay archivo).
+- [x] **Metadata + reloj opcional** — `target_duration_seconds`, título/artista/idioma/mood.
+- [x] **Estructura de canción** — Secciones ancladas a índices de línea + reordenación + `structure_warnings`.
+- [x] **Inteligencia de letra (LYR)** — Líneas derivadas, ideas heurísticas + LLM opcional, edición y reordenación.
+- [x] **Alineación opcional línea ↔ tiempo** — Campo `line_timings_json` (JSON) editable en UI Plan.
+- [x] **Intake + dirección + rutas + Creative Lock** — JSON + endpoints lock/unlock + snapshot; bloqueo de mutaciones con lock.
+- [x] **Visual Bible + Treatment** — `GET /projects/{id}/documents/preview` + contenido en `export/bundle.md`.
+- [x] **Timeline / escenas / shots** — Campos `timeline_plan_json`, `scenes_json`, `shots_json` persistidos + edición JSON en UI (sin editor visual de timeline dedicado).
+- [x] **Compilador de prompts** — Genérico / Runway / Kling vía `export/prompts.md?provider=…`.
+- [x] **Plan de generación + matriz de revisión** — `generation_plan_json`, `review_matrix_json` persistidos.
+- [x] **Exportación v1** — Markdown bundle, **shots.json**, **shots.csv**, prompt packs (v1 no incluye ZIP ni jobs en cola).
 
-### Active
+### Active (post-MVP / backlog)
 
-- [ ] Workspace por canción con persistencia y revisión de estado del flujo guiado.
-- [ ] Ingesta: audio, letra (pegar/subir), metadata básica (título, artista, idioma, mood).
-- [ ] Análisis de audio heurístico (duración, BPM aprox, onsets, energía, segmentación tentativa, curva de intensidad).
-- [ ] Análisis de letra estructurado (líneas/bloques, anclas visuales, propuestas interpretativas).
-- [ ] Alineación letra ↔ tiempo en tabla editable (start/end, sección, intensidad, notas).
-- [ ] Flujo de investigación creativa y motor de decisiones de director (preguntas concretas, respuestas persistidas).
-- [ ] Rutas creativas múltiples, elección/mezcla y **Creative Lock** versionado antes de planificación densa.
-- [ ] Generación de **Visual Bible** y **Treatment** exportables.
-- [ ] Timeline por secciones, scene cards y shot list editables.
-- [ ] Compilador de prompts canónico + al menos dos perfiles de proveedor además del genérico (por defecto: **Runway** + **Kling** hasta decisión explícita).
-- [ ] Plan de generación, checklist y matriz de revisión por plano.
-- [ ] Exportación v1: Markdown (brief, preguntas, bible, treatment, timeline, edit plan), CSV + JSON shot list, prompt packs `.md` por proveedor.
-- [ ] Confirmación de derechos de uso del audio antes de procesamiento pesado (checkbox + copy legal mínimo).
+- [ ] **Editor visual de timeline** anclado a secciones (sustituir o complementar JSON crudo).
+- [ ] **Jobs asíncronos** — Sustituir stub `analysis/enqueue` por pipeline con cola y workers cuando haga falta.
+- [ ] **Streaming y curación masiva** en generación LLM de ideas (LYR-02 polish).
+- [ ] **Migraciones Alembic** (o equivalente) para evolución de esquema sin borrar DB en prod.
 
 ### Out of Scope
 
-- **Render de vídeo por API** desde la app en v1 — el valor es el paquete de dirección y prompts.
-- **EDL / FCPXML / Premiere / Resolve** — fases posteriores.
-- **Alineación automática perfecta** letra–voz; solo asistida + edición manual confiable.
-- **Colaboración multiusuario en tiempo real** — post-MVP.
+- **Render de vídeo por API** desde la app en v1.
+- **Análisis musical pesado** (BPM, onsets, curvas de energía, segmentación DSP) en v1 — roadmap *Audio Pro*.
+- **EDL / FCPXML / Premiere / Resolve** en v1.
+- **Alineación automática perfecta** letra–voz.
+- **Colaboración multiusuario en tiempo real** en v1.
 
 ## Context
 
-- Nicho inicial: cantautor, letras muy visuales y narrativas poéticas.
-- Stack acordado (MVP): **Next.js (React, TS, Tailwind)** + **FastAPI (Pydantic, SQLModel/SQLAlchemy)** + SQLite dev / Postgres prod + workers para análisis de audio + SSE/WebSocket para progreso; **ffmpeg + librosa**; prompts LLM versionados fuera del código (`/prompts`). **shadcn/ui** puede incorporarse al pulir UI de fases posteriores.
-- **2026-05-13:** Implementado **Fase 1** en repo: `backend/` (FastAPI, SQLite bajo `backend/data/`) y `frontend/` (Next.js App Router, Song Setup, lista de proyectos, gate OPS-01 + stub `POST /projects/{id}/analysis/enqueue`). Ver [README.md](../README.md).
-- Decisiones pendientes de producto: ver §13 en [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md).
+- Nicho: letras muy visuales / narrativa poética; el videoclip debe “honrar” la letra.
+- Stack: **Next.js (React, TS, Tailwind)** + **FastAPI (Pydantic, SQLModel/SQLAlchemy)** + SQLite dev / Postgres prod; prompts en `/prompts`. **Workers + librosa** solo cuando activemos *Audio Pro*.
+- Repo: **MVP v1 letra-primero** implementado en código (fases 1–6 según ROADMAP); CI en `.github/workflows/ci.yml`.
 
 ## Constraints
 
-- **Legal / creativo**: referencias traducidas a atributos; no copiar obras o artistas identificables en prompts finales; consentimiento explícito para fotos de personas reales.
-- **Técnico**: núcleo **agnostic** respecto a proveedor de vídeo; adaptadores por perfil.
-- **Calidad**: reglas anti-collage (anclas por escena, límite configurable de planos por bloque, continuidad explícita).
+- **Legal:** derechos explícitos sobre letra; si hay audio u otros assets, mismos estándares.
+- **Creativo:** referencias → atributos; no copiar obras o artistas identificables en prompts finales.
+- **Técnico:** núcleo agnóstico de proveedor de vídeo.
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| MVP sin generación de vídeo por API | Reduce riesgo y acelera valor (treatment + shot list + prompt packs). | — Pending |
-| Shot como unidad atómica con herencia de contexto | Evita prompts aislados y collage. | — Pending |
-| Perfiles de proveedor por defecto Runway + Kling (además de genérico) | Cumple “≥2 proveedores” del master hasta que el usuario elija otros. | — Pending |
-| Documento maestro en repo `docs/VIDEOZERO-MASTER.md` | Una fuente para GSD y para el equipo. | ✓ Good |
-| Fase 1 monorepo Next+FastAPI en repo | Desbloquea ejecución sin depender solo de documentación. | ✓ Good |
+| **Letra primero** como posicionamiento y diseño | Maximiza claridad de valor, reduce coste MVP y riesgo legal vs audio-DSP-first. | ✓ Good (2026-05-13) |
+| MVP sin generación de vídeo por API | Valor = dirección + prompts exportables. | ✓ Shipped (MVP) |
+| Shot como unidad atómica con herencia de contexto | Evita prompts aislados. | ✓ MVP (`shots_json` + exports) |
+| Runway + Kling + genérico como perfiles iniciales | Cobertura práctica de export. | ✓ MVP |
+| Documento maestro v1 en `docs/VIDEOZERO-MASTER.md` | Fuente única post-redefinición. | ✓ Good |
+| Fase 1 monorepo en repo | Base de ejecución. | ✓ Good |
 
 ## Evolution
 
@@ -83,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-*Last updated: 2026-05-13 after Phase 1 implementation (monorepo + Song Setup)*
+*Last updated: 2026-05-13 — MVP v1 (letra primero + exports) marcado como validado en código; backlog en Active.*

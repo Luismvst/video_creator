@@ -6,8 +6,9 @@ export default function HomePage() {
       <div>
         <h1 className="text-2xl font-semibold text-white">Bienvenido</h1>
         <p className="mt-2 text-[var(--vz-muted)]">
-          Crea un proyecto por canción y completa el paso <strong className="text-zinc-200">Song Setup</strong>
-          : audio, letra, metadata y confirmación de derechos (OPS-01).
+          <strong className="text-zinc-200">VideoZero</strong> es un director creativo{" "}
+          <strong className="text-zinc-200">guiado por la letra</strong>. Crea un proyecto, pega tu letra y completa el
+          setup (metadata, duración objetivo opcional, audio opcional, declaraciones de derechos).
         </p>
       </div>
       <div className="flex flex-wrap gap-3">

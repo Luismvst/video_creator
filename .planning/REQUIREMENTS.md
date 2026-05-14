@@ -1,84 +1,92 @@
 # Requirements: VideoZero
 
 **Defined:** 2026-05-13  
-**Core value:** Cada plano y export hereda contexto validado (letra, tiempo, biblia, continuidad, proveedor) para evitar collage incoherente en producción con IA externa.
+**Revised:** 2026-05-13 (v1 · letra primero)  
+**Core value:** Cada plano y export hereda contexto validado anclado en la **letra** y las **decisiones de dirección**, para producir en herramientas externas sin collage incoherente — con o sin audio.
 
 ## v1 Requirements
 
 ### Project & workspace
 
-- [ ] **PROJ-01**: User can create a new song project (workspace) with a name
-- [ ] **PROJ-02**: User can reopen a saved project and continue the guided flow where they left off
+- [x] **PROJ-01**: User can create a new project (workspace) with a name
+- [x] **PROJ-02**: User can reopen a saved project and continue the guided flow where they left off
 
-### Ingestion
+### Ingestion (lyrics-first)
 
-- [ ] **ING-01**: User can upload an audio file for the song (stored per project)
-- [ ] **ING-02**: User can paste lyrics as text or upload a lyrics file
-- [ ] **ING-03**: User can edit song metadata (title, artist, language, target mood)
+- [x] **ING-01**: User can paste or upload **lyrics** as the primary required input
+- [x] **ING-02**: User can optionally upload an **audio** file (reference / future timing); not required to complete MVP path
+- [x] **ING-03**: User can edit basic metadata (title, artist, language, target mood)
+- [x] **ING-04**: User can set an optional **target duration** (e.g. seconds) as the primary “clock” when no audio exists
 
-### Audio analysis
+### Structure (lyric-native)
 
-- [ ] **ANA-01**: System computes duration and approximate BPM from uploaded audio
-- [ ] **ANA-02**: System produces tentative segments, onset markers, and per-window energy / intensity curve
-- [ ] **ANA-03**: User can see analysis job progress (async) and a completed summary when done
+- [ ] **STR-01**: User can define, rename, and reorder **lyric sections** (intro/verse/chorus/custom) and attach them to lyric blocks or line ranges
+- [ ] **STR-02**: User can choose a **pacing profile** (guided questions) that influences default shot density and edit rhythm without DSP
 
-### Lyrics analysis
+### Lyrics intelligence
 
-- [ ] **LYR-01**: System parses lyrics into ordered lines/blocks suitable for alignment and downstream linking
+- [ ] **LYR-01**: System parses lyrics into ordered lines/blocks suitable for structure linking
 - [ ] **LYR-02**: System proposes visual motifs, symbols, places, and interpretive hooks (LLM-assisted, user-editable)
 
-### Alignment
+### Optional timing
 
-- [ ] **ALN-01**: User can edit a table of line alignments (line id, start time, end time, section override, emotional intensity, visual notes)
+- [ ] **ALN-01**: User can edit optional per-line timings (start/end nullable) **or** rely on section-relative placement when timestamps are unknown
 
 ### Creative intake & direction
 
-- [ ] **CRE-01**: User can submit references and “vibes” that are translated into non-literal style attributes (no copyable artist/work names in compiled prompts)
+- [ ] **CRE-01**: User can submit references and “vibes” translated into non-literal style attributes (no copyable artist/work names in compiled prompts)
 - [ ] **DIR-01**: User can complete a guided director questionnaire with concrete options (answers persisted)
-- [ ] **DIR-02**: User can compare multiple creative routes, select or blend, and **lock** a creative direction snapshot before dense shot planning
+- [ ] **DIR-02**: User can compare creative routes, select or blend, and **lock** a creative direction snapshot before dense shot planning
 
 ### Documents
 
 - [ ] **DOC-01**: System generates an exportable **Visual Bible** from locked direction and structured inputs
-- [ ] **DOC-02**: System generates an exportable **Treatment** (professional tone, presentable to artist/producer)
+- [ ] **DOC-02**: System generates an exportable **Treatment** (professional tone)
 
 ### Timeline, scenes, shots
 
-- [ ] **PLN-01**: User can review and edit **timeline blocks** (time range, section, linked lyric lines, narrative goal, primary visual, transitions, edit pace)
-- [ ] **PLN-02**: User can define **scenes** linked to timeline blocks with mood and location/character refs from the bible
-- [ ] **PLN-03**: User can review and edit **shot list** rows (timestamps, camera, action, continuity constraints, review criteria)
+- [ ] **PLN-01**: User can review and edit **timeline blocks** anchored to lyric sections and lyric lines (narrative goal, primary visual, transitions, edit pace)
+- [ ] **PLN-02**: User can define **scenes** linked to timeline blocks with mood and bible references
+- [ ] **PLN-03**: User can review and edit **shot list** rows (timing optional, camera, action, continuity constraints, review criteria)
 
 ### Prompt compilation
 
 - [ ] **PRM-01**: System compiles each shot into a **canonical / generic cinematic** prompt string from bible + scene + shot fields
-- [ ] **PRM-02**: System compiles the same shot into **Runway**-oriented prompt text (adapter profile)
-- [ ] **PRM-03**: System compiles the same shot into **Kling**-oriented prompt text (adapter profile)
+- [ ] **PRM-02**: System compiles into **Runway**-oriented prompt text
+- [ ] **PRM-03**: System compiles into **Kling**-oriented prompt text
 
 ### Generation plan & review
 
 - [ ] **GEN-01**: System outputs a **generation plan** (ordered steps, dependencies, notes for i2v vs t2v where applicable)
-- [ ] **GEN-02**: System outputs a **generation checklist** and **review matrix** criteria per shot (e.g. lyric fit, bible fit, continuity, motion, emotion, edit usefulness, AI artifacts)
+- [ ] **GEN-02**: System outputs a **generation checklist** and **review matrix** criteria per shot
 
 ### Export
 
-- [ ] **EXP-01**: User can download or copy a Markdown bundle including creative brief, director questions, visual bible, treatment, timeline, edit plan
-- [ ] **EXP-02**: User can export shot list as **CSV** and **JSON** with stable column/key names
+- [ ] **EXP-01**: User can download or copy a Markdown bundle (brief, questions, bible, treatment, timeline, edit plan)
+- [ ] **EXP-02**: User can export shot list as **CSV** and **JSON**
 - [ ] **EXP-03**: User can export **prompt packs** as Markdown per provider (generic, Runway, Kling)
 
-### Compliance (MVP minimum)
+### Compliance (MVP)
 
-- [ ] **OPS-01**: User must confirm they have rights to use the uploaded audio for this workflow before heavy analysis runs (checkbox + short legal copy)
+- [x] **OPS-01**: User must confirm rights to use the **lyrics** in this workflow before running the generative pipeline (checkbox + short copy)
+- [x] **OPS-02**: If an audio file is uploaded, user must confirm rights to use that **audio** before any audio processing beyond trivial metadata (e.g. duration via ffprobe)
 
 ## v2 Requirements
 
-### Ingestion & analysis
+### Audio Pro (DSP)
+
+- **ANA-01**: Approximate BPM, onsets, per-window energy / intensity curve from audio
+- **ANA-02**: Tentative musical segmentation suggestions (user-reviewed)
+- **ANA-03**: Async job UX with progress for audio analysis jobs
+
+### Assisted alignment
 
 - **ING-10**: Assisted lyric-to-audio alignment suggestions (Whisper / WhisperX) with explicit low-confidence warnings
 
 ### Export & integration
 
-- **EXP-10**: EDL / FCPXML / XML for Premiere or DaVinci Resolve
-- **INT-10**: Optional API submission adapters for video providers (`submitGeneration`, job status, download)
+- **EXP-10**: EDL / FCPXML / XML for NLEs
+- **INT-10**: Optional API adapters for video providers
 
 ### Collaboration
 
@@ -88,24 +96,26 @@
 
 | Feature | Reason |
 |---------|--------|
-| Fully automatic in-app video render of the full music video | v1 delivers planning + prompts for external tools; API render deferred |
-| Perfect automatic lyric-to-vocal alignment | Unreliable on music; manual table is the source of truth in v1 |
-| Real-time multi-user editing | Not required for initial creative niche |
-| OAuth / billing / accounts | Defer unless product decision moves to cloud SaaS immediately |
+| Full music-video render inside the app | v1 is planning + prompts for external tools |
+| Heavy DSP-first workflow in v1 | Deferred to v2 *Audio Pro*; lyrics-first reduces cost and mismatched expectations |
+| Perfect automatic lyric-to-vocal alignment | Unreliable; manual/assisted later |
+| Real-time multi-user editing | Not required for initial niche |
+| OAuth / billing / accounts | Defer unless cloud SaaS is immediate |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PROJ-01 | Phase 1 | Pending |
-| PROJ-02 | Phase 1 | Pending |
-| ING-01 | Phase 1 | Pending |
-| ING-02 | Phase 1 | Pending |
-| ING-03 | Phase 1 | Pending |
-| OPS-01 | Phase 1 | Pending |
-| ANA-01 | Phase 2 | Pending |
-| ANA-02 | Phase 2 | Pending |
-| ANA-03 | Phase 2 | Pending |
+| PROJ-01 | Phase 1 | Done |
+| PROJ-02 | Phase 1 | Done |
+| ING-01 | Phase 1.5 | Done |
+| ING-02 | Phase 1.5 | Done |
+| ING-03 | Phase 1.5 | Done |
+| ING-04 | Phase 1.5 | Done |
+| OPS-01 | Phase 1.5 | Done |
+| OPS-02 | Phase 1.5 | Done |
+| STR-01 | Phase 2 | Pending |
+| STR-02 | Phase 2 | Pending |
 | LYR-01 | Phase 2 | Pending |
 | LYR-02 | Phase 2 | Pending |
 | ALN-01 | Phase 3 | Pending |
@@ -128,11 +138,10 @@
 
 **Coverage:**
 
-- v1 requirements: 26 total
-- Mapped to phases: 26
+- v1 requirements: 28 total
+- Mapped to phases: 28
 - Unmapped: 0 ✓
 
 ---
 
-*Requirements defined: 2026-05-13*  
-*Last updated: 2026-05-13 after GSD initialization*
+*Last updated: 2026-05-13 — Phase 1.5 requirements marked done in traceability*

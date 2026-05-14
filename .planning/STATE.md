@@ -2,64 +2,51 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-13)
+See: [.planning/PROJECT.md](PROJECT.md)
 
-**Core value:** Cada plano y export hereda contexto validado (letra, tiempo, biblia, continuidad, proveedor) para evitar collage incoherente en producción con IA externa.
-**Current focus:** Phase 2 — Audio & lyrics analysis
+**Core value:** Herencia de contexto anclada en la **letra** y la **dirección** (lock, biblia, secciones), no en prompts sueltos — con o sin audio.
+
+**Current focus:** Cierre MVP v1 en código; siguiente iteración = polish (timeline UI, jobs async, migraciones).
 
 ## Current Position
 
-Phase: 2 of 6 (Audio & lyrics analysis)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-05-13 — Implemented Phase 1 monorepo (FastAPI + Next.js Song Setup + OPS-01 stub gate)
+Phase: **Roadmap 1 → 6 (MVP code)** marcado completo en [ROADMAP.md](ROADMAP.md)  
+Plan: MVP aplicado en repo (sin PLAN.md por subtarea)  
+Status: **MVP shipped** — listo para uso interno / demo; backlog en PROJECT → Active  
+Last activity: 2026-05-13 — exports `shots.json` / `shots.csv`, recomendaciones en `analysis/enqueue`, CI GitHub Actions.
 
-Progress: [█░░░░░░░░░] ~17%
+Progress: [██████████] 100% del **slice MVP** definido en ROADMAP (con backlog explícito para UI avanzada y jobs).
 
 ## Performance Metrics
 
-**Velocity:**
-
-- Total plans completed: 3 (Phase 1 plans 01-01 … 01-03, shipped as single increment)
-- Average duration: —
-- Total execution time: —
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| — | — | — | — |
-
-**Recent Trend:**
-
-- Last 5 plans: —
-- Trend: —
-
-*Updated after each plan completion*
+**Velocity:** Phase 1 (3) · 1.5 (3) · 2–6 MVP integrado en iteración única posterior.
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
+- **2026-05-13:** Export v1 incluye Markdown + **JSON + CSV** de shot list (`GET …/export/shots.json`, `…/shots.csv`), coherente con snapshot si hay Creative Lock.
+- **2026-05-13:** `POST …/analysis/enqueue` sigue siendo **stub** (no encola jobs) pero devuelve `recommendations[]` accionables.
+- **2026-05-13:** CI: workflow `ci.yml` — `pytest` backend + `npm run build` frontend.
 
-- Initialization: GSD artifacts created manually in-repo; `gsd-sdk` CLI not verified in this environment.
+### Pending Todos (no bloquean MVP)
 
-### Pending Todos
-
-None yet.
+- Editor visual de timeline / scene cards (hoy: JSON en pestaña Plan).
+- Alembic o migraciones para Postgres.
+- Sustituir stub por workers reales cuando el producto lo exija.
 
 ### Blockers/Concerns
 
-- Resolver decisiones abiertas en [docs/VIDEOZERO-MASTER.md](../docs/VIDEOZERO-MASTER.md) §13 antes de cerrar contratos de export (idioma UI, límites de audio, modelo de despliegue).
+- SQLite dev: si cambia el modelo, en dev puede seguir haciendo falta borrar `backend/data/videozero.db` hasta tener migraciones.
 
 ## Deferred Items
 
 | Category | Item | Status | Deferred At |
 |----------|------|--------|---------------|
-| *(none)* | | | |
+| Audio | BPM / onsets / curvas / jobs DSP | Deferred | 2026-05-13 |
+| Product | Timeline UI dedicada | Backlog | 2026-05-13 |
 
 ## Session Continuity
 
-Last session: 2026-05-13
-Stopped at: Phase 1 implementation merged in repo; run UAT (README), then `/gsd-plan-phase 2` or `/gsd-discuss-phase 2`.
+Last session: 2026-05-13  
+Stopped at: MVP v1 cerrado en código + documentación alineada; próximo paso natural = milestone review o backlog Active.
