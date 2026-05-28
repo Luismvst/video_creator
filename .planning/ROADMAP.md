@@ -197,7 +197,15 @@ texto, sin gasto) salvo el render final.
 7. **Reroll dirigido**: regenerar solo los segmentos marcados, no todo el timeline.
 8. **No regresión**: suite sigue verde, sin imports pesados a nivel módulo, degradación sin key.
 
-**Plans:** TBD (este `/gsd-plan-phase 12`).
+**Plans:** 7 plans (5 waves)
+
+- [ ] 12-01-PLAN.md — Wave 0: tests stub para los 7 DIRQ (Nyquist gate)
+- [ ] 12-02-PLAN.md — DIRQ-01: visual_bible.py (heurística+LLM+sanitizador) + persistencia
+- [ ] 12-03-PLAN.md — DIRQ-04: camera_language.py (mapa energía→cámara, puro)
+- [ ] 12-04-PLAN.md — DIRQ-02/06: compile_layered_prompt + tuning por proveedor
+- [ ] 12-05-PLAN.md — DIRQ-03/01: shots ricos 8-15 + fusión de la biblia en el paquete
+- [ ] 12-06-PLAN.md — DIRQ-02/04: inyección biblia + cámara-por-energía en el planner
+- [ ] 12-07-PLAN.md — DIRQ-05/07: keyframe encadenado real (init-image) + reroll dirigido
 
 ## Progress
 
@@ -217,4 +225,4 @@ texto, sin gasto) salvo el render final.
 | 9. Render client & cost gate (F3) | code | Complete (dry-run) | 2026-05-28 |
 | 10. Keyframes plan (F4) | code | Complete (dry-run) | 2026-05-29 |
 | 11. Final assembly + E2E (F5) | code | Complete (dry-run) | 2026-05-29 |
-| 12. Cinematic prompting & direction (F6) | — | **Planning** | — |
+| 12. Cinematic prompting & direction (F6) | 0/7 | **Planned** | — |
