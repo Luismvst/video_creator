@@ -46,10 +46,10 @@ def test_plan_keyframes_no_chain() -> None:
     assert all(k["reference_image"] is None for k in plan["keyframes"])
 
 
-def test_pipeline_lyrics_only_dry_run() -> None:
+def test_pipeline_lyrics_only_dry_run(tmp_path) -> None:
     m = run_pipeline(
         lyrics_text=LYRICS, target_duration=120.0, provider="kling",
-        max_budget_usd=40.0, dry_run=True, work_dir="vz_work_test",
+        max_budget_usd=40.0, dry_run=True, work_dir=str(tmp_path / "vz"),
     )
     assert m["dry_run"] is True
     # sin audio → fuente heurística y audio degradado
@@ -62,19 +62,19 @@ def test_pipeline_lyrics_only_dry_run() -> None:
     assert m["f5_assembly"]["command"][0] == "ffmpeg"
 
 
-def test_pipeline_budget_abort_surfaces() -> None:
+def test_pipeline_budget_abort_surfaces(tmp_path) -> None:
     m = run_pipeline(
         lyrics_text=LYRICS, target_duration=600.0, provider="veo3",
-        max_budget_usd=5.0, dry_run=True, work_dir="vz_work_test",
+        max_budget_usd=5.0, dry_run=True, work_dir=str(tmp_path / "vz"),
     )
     assert m["cost"]["over_budget"] is True
     assert m["f3_render"]["aborted"] is True
 
 
-def test_pipeline_keyframes_cost_added() -> None:
+def test_pipeline_keyframes_cost_added(tmp_path) -> None:
     m = run_pipeline(
         lyrics_text=LYRICS, target_duration=60.0, provider="kling",
-        keyframes=True, dry_run=True, work_dir="vz_work_test",
+        keyframes=True, dry_run=True, work_dir=str(tmp_path / "vz"),
     )
     assert m["f4_keyframes"] is not None
     assert m["f4_keyframes"]["planned"] == m["n_segments"]

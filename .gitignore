@@ -9,6 +9,14 @@ backend/__pycache__/
 backend/**/*.pyc
 backend/data/
 
+# VideoZero v2 — artefactos de trabajo del pipeline (audio, clips, keyframes, manifiestos)
+backend/vz_work*/
+backend/render_out/
+backend/audio_work/
+backend/keyframes_out/
+*.mp4
+*.wav
+
 # OS
 .DS_Store
 Thumbs.db
