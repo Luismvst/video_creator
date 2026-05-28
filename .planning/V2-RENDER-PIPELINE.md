@@ -306,24 +306,41 @@ Ensamblado final → `videoclip_final.mp4` (8 tests verdes; sin ffmpeg ni ficher
 - Smoke cadena completa verificado: planner F2 (5 segs) → naming `clip_001..005.mp4` →
   assemble construye el `ffmpeg` correcto con concat + audio + subtítulos.
 
+### v2-F4 + Orquestación E2E — IMPLEMENTADO (2026-05-29, dry-run)
+
+- `backend/app/keyframes.py` (F4): `plan_keyframes()` — keyframe por segmento con
+  **encadenado** (cada uno referencia el anterior → continuidad anti-collage). Coste por
+  imagen (Flux ~$0.04) configurable. Dry-run sin key; camino real fal aislado.
+- `backend/app/pipeline.py`: `run_pipeline()` — **orquestador único F1→F5** (puente
+  F1→F2 incluido): audio→tiempos → shots (onboarding heurístico, sin key) → timeline →
+  keyframes(opc) → coste+gate+render → ensamblado. Escribe `timings.json` y `segments.json`.
+  Devuelve manifiesto con coste total agregado.
+- `backend/app/make_video.py`: **CLI único** `python -m app.make_video`.
+- `backend/app/onboarding_ai.py`: comprometido como dependencia (generador de shots; ruta
+  heurística sin key, LLM opcional con `--llm`).
+- Fix: el fallback heurístico (solo-letra) ahora trocea a `max_clip` (~8s) → clips generables
+  (antes producía 2 clips de 75s). Smoke: letra+150s → 19 segmentos, coste Kling ~$21.
+
 ## Estado del pipeline v2 (resumen)
 
-| Fase | Estado | Necesita |
-|------|--------|----------|
+| Fase | Estado | Necesita para PRODUCCIÓN |
+|------|--------|--------------------------|
 | F1 ingesta audio + alineación | ✅ local | yt-dlp/demucs/whisperx/librosa + ffmpeg (extra) |
 | F2 planner temporal real | ✅ | — |
-| F3 cliente render + gate coste | ✅ dry-run | `FAL_KEY` para generar |
-| **F4 keyframes encadenados** | ⬜ pendiente (continuidad, opcional) | `FAL_KEY` |
-| F5 ensamblado → MP4 final | ✅ dry-run/local | ffmpeg en PATH para `--run` |
+| F3 cliente render + gate coste | ✅ dry-run | `FAL_KEY` |
+| F4 keyframes encadenados | ✅ dry-run | `FAL_KEY` |
+| F5 ensamblado → MP4 final | ✅ dry-run/local | ffmpeg en PATH |
+| **E2E `make_video`** | ✅ dry-run | `FAL_KEY` + ffmpeg |
 
-**Cadena conectada de extremo a extremo en dry-run.** Para el primer vídeo real:
-1. `pip install -r requirements-audio.txt` + ffmpeg en PATH.
-2. Conseguir `FAL_KEY`.
-3. F1 (URL+letra→tiempos) → F2 (timeline) → F3 `--no-dry-run --limit 1` (1 clip) →
-   escalar → F5 `--run` (MP4 final).
+**Pipeline completo conectado y testeado en dry-run (48 tests verdes).** Para el primer vídeo real:
+1. `pip install -r requirements-audio.txt` + ffmpeg en PATH + conseguir `FAL_KEY`.
+2. `python -m app.make_video --lyrics letra.txt --url "..." --max-budget 40` (dry-run: revisa coste).
+3. Probar 1 clip: extraer `segments.json` de `vz_work/` →
+   `FAL_KEY=... python -m app.render_clip --segments vz_work/segments.json --no-dry-run --limit 1`.
+4. Si convence: `FAL_KEY=... python -m app.make_video --lyrics letra.txt --url "..." --run --max-budget 40`.
 
-Pendiente de pulido: **F4** (keyframe encadenado para coherencia entre clips) y la
-**orquestación E2E** en un solo comando (`render_clip` que encadene F1→F5).
+Pulido futuro (opcional): shots más ricos por defecto (hoy 2 en heurística; usar `--llm`),
+keyframe real como init-image en image-to-video, y persistir `segments.json` directo desde el CLI de F3.
 
 ---
 

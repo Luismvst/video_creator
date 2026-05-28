@@ -92,8 +92,12 @@ def test_high_energy_section_cuts_faster() -> None:
 def test_plan_timeline_falls_back_to_heuristic() -> None:
     segs, source = plan_timeline(SHOTS, line_timings=None, total_seconds=90.0)
     assert source == "heuristic"
-    assert len(segs) == len(SHOTS)
     assert all(s.get("source") == "heuristic" for s in segs)
+    # sin tiempos reales, pero ningún clip debe superar max_clip (troceado)
+    assert all(s["duration_sec"] <= 8.0 + 0.05 for s in segs)
+    # índices consecutivos desde 1 y cobertura ~total
+    assert [s["index"] for s in segs] == list(range(1, len(segs) + 1))
+    assert abs(segs[-1]["end_sec"] - 90.0) < 0.2
 
 
 def test_plan_timeline_uses_music_when_timings() -> None:

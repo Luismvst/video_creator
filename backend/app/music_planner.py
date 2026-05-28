@@ -184,6 +184,31 @@ def plan_segments_from_timings(
     return _materialize(segs, shots, line_starts, title=title)
 
 
+def _enforce_max_clip(segments: list[dict[str, Any]], max_clip: float) -> list[dict[str, Any]]:
+    """Trocea segmentos heurísticos más largos que `max_clip` (ningún motor genera
+    clips de decenas de segundos). Conserva shot y prompts, reparte el tiempo y
+    re-indexa. Para el modo solo-letra (sin tiempos reales)."""
+    out: list[dict[str, Any]] = []
+    for seg in segments:
+        s = float(seg.get("start_sec") or 0.0)
+        dur = float(seg.get("duration_sec") or 0.0)
+        e = float(seg.get("end_sec") or (s + dur))
+        if dur <= max_clip + 1e-6 or dur <= 0:
+            out.append(dict(seg))
+            continue
+        n = max(1, math.ceil(dur / max_clip))
+        step = (e - s) / n
+        for k in range(n):
+            ns = round(s + step * k, 2)
+            ne = round(e, 2) if k == n - 1 else round(s + step * (k + 1), 2)
+            child = dict(seg)
+            child["start_sec"], child["end_sec"], child["duration_sec"] = ns, ne, round(ne - ns, 2)
+            out.append(child)
+    for i, seg in enumerate(out, start=1):
+        seg["index"] = i
+    return out
+
+
 def plan_timeline(
     shots: list[dict[str, Any]],
     *,
@@ -191,6 +216,7 @@ def plan_timeline(
     music: Optional[dict[str, Any]] = None,
     total_seconds: Optional[float] = None,
     title: Optional[str] = None,
+    max_clip: float = 8.0,
 ) -> tuple[list[dict[str, Any]], str]:
     """Punto de entrada único: planner musical si hay tiempos reales, si no heurístico.
 
@@ -209,15 +235,18 @@ def plan_timeline(
             total_seconds=float(duration),
             beats=music.get("beats"),
             sections=music.get("sections"),
+            max_clip=max_clip,
             title=title,
         )
         if segs:
             return segs, "music"
 
-    # Fallback heurístico (sin audio o sin tiempos utilizables)
+    # Fallback heurístico (sin audio o sin tiempos utilizables): reparte y luego
+    # trocea para que ningún clip supere max_clip (clips generables ~5-8s).
     from .timed_segments import propose_timed_segments
 
     segs = propose_timed_segments(float(duration or 180.0), shots, title=title)
+    segs = _enforce_max_clip(segs, max_clip)
     for s in segs:
         s.setdefault("source", "heuristic")
     return segs, "heuristic"
