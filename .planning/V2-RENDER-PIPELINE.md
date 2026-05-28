@@ -275,8 +275,25 @@ Planner temporal real (8 tests verdes, puros):
 - Se comprometen también las dependencias base que faltaban en repo: `timed_segments.py`,
   `video_cost_estimate.py` y `test_timed_segments.py`.
 
-**Siguiente:** v2-F3 — cliente de render (fal.ai → Kling 3.0) por segmento + estimador de
-coste real con tope de presupuesto, gastando solo cuando tú apruebes.
+### v2-F3 — IMPLEMENTADO (2026-05-28, dry-run)
+
+Cliente de render + control de coste (9 tests verdes; sin red ni FAL_KEY):
+
+- `backend/app/render_client.py`:
+  - `PROVIDERS` con tarifas 2026 (kling 0.10 default · veo3_fast 0.15 · veo3 0.75 · wan 0.05 · runway 0.15),
+    todas sobreescribibles por entorno. Modelo fal.ai por proveedor configurable.
+  - `estimate_render_cost()` — coste = Σ duración × tarifa × factor_rerolls (puro).
+  - `within_budget()` — gate de presupuesto (puro).
+  - `render_segment()` / `render_timeline()` — **dry-run por defecto** (valida prompts + estima,
+    no genera, no necesita key). `render_timeline` **aborta ANTES de gastar** si el estimado
+    supera `max_budget_usd`. `limit=N` para probar 1 clip antes de lanzar la canción entera.
+  - Camino real fal.ai (queue API vía urllib) aislado tras `dry_run=False` + `FAL_KEY`.
+- `backend/app/render_clip.py` — CLI (`--segments --provider --max-budget --limit --no-dry-run`).
+- Smoke E2E verificado: planner F2 → 26 segmentos (0→180s) → estimación Kling $25.2 / Veo3 $189 (aborta con tope 20).
+
+**Siguiente:** v2-F4 (keyframes encadenados para continuidad) y v2-F5 (orquestación + `ffmpeg`
+concat + mux del audio original → MP4 final). El primer gasto real ocurre cuando pongas `FAL_KEY`
+y lances `--no-dry-run --limit 1`.
 
 ---
 
