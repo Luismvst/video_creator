@@ -6,7 +6,9 @@ See: [.planning/PROJECT.md](PROJECT.md)
 
 **Core value:** Herencia de contexto anclada en la **letra** y la **dirección** (lock, biblia, secciones), no en prompts sueltos — con o sin audio.
 
-**Current focus:** Cierre MVP v1 en código; siguiente iteración = polish (timeline UI, jobs async, migraciones).
+**Current focus:** Milestone **v2 Render & Direction**. Fases 7–11 (pipeline F1–F5 + E2E) hechas en
+dry-run; **Fase 12 (F6 — prompting/dirección de calidad) PLANIFICADA** (7 planes, 5 waves, plan-checker
+PASS tras revisión). Siguiente: `/gsd-execute-phase 12`.
 
 ## Current Position
 
