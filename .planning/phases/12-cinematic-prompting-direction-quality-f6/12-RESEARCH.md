@@ -387,21 +387,23 @@ def test_reroll_only_marked_indices():
 | A3 | El vocabulario concreto de cámara por nivel de energía (push-in/handheld/whip) es aceptable para el usuario | DIRQ-04 | Bajo — marcado "Claude's Discretion" en CONTEXT.md; ajustable sin romper tests |
 | A4 | 8-15 shots repartidos por secciones de letra es la densidad correcta sin key | DIRQ-03 | Bajo — rango dado explícitamente en CONTEXT.md/REQUIREMENTS |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **¿Dónde se persiste la biblia visual?**
-   - Sé: `onboarding_ai` ya escribe campos JSON en `Song` (`director_answers_json`, etc.).
-   - No sé: si hay que añadir columna `visual_bible_json` (migración) o anidarla en `director_answers_json` (sin migración).
-   - Recomendación: el planner debe leer `backend/app/schemas.py` y el modelo `Song` para decidir; **preferir anidar** en un JSON existente si evita migración, salvo que se quiera consultar la biblia por separado.
+1. **¿Dónde se persiste la biblia visual?** — **RESUELTO (plan 12-02):** columna JSON `visual_bible_json`
+   **aditiva y opcional** (`Optional[str] = None`) en el modelo `Song`, igual que los blobs JSON
+   existentes; SQLite dev recrea el esquema (borrar `backend/data/videozero.db` en dev), **sin Alembic**.
+   No se anida en `director_answers_json` para poder consultarla y reutilizarla por separado en todos los segmentos.
 
-2. **¿Modelo i2v distinto al t2v en fal?**
-   - Sé: `PROVIDERS[*].fal_model` apunta hoy a endpoints `text-to-video`.
-   - No sé: si i2v usa otro endpoint (p.ej. `.../image-to-video`).
-   - Recomendación: añadir `fal_model_i2v` configurable por env; usarlo solo cuando hay `image_url`. No bloquea dry-run.
+2. **¿Modelo i2v distinto al t2v en fal?** — **RESUELTO (plan 12-07):** añadir `fal_model_i2v`
+   configurable por entorno; usarlo solo cuando hay `image_url`. Camino real aislado tras
+   `dry_run=False`+`FAL_KEY`; el nombre exacto del campo (`image_url`) queda como supuesto A1 de bajo
+   riesgo verificable en la prueba real, sin bloquear el plan dry-run.
 
-3. **¿Añadir `prompt_veo` como cuarto campo de prompt?**
-   - Sé: hoy hay `prompt_generic/runway/kling`; `veo3` usa `prompt_generic` (`render_client` línea 52).
-   - Recomendación: el tuning Veo (cámara-primero) difiere del genérico; añadir `prompt_veo` opcional y mapear `veo3*` a él en `PROVIDERS`. Aditivo, no rompe F3/F5.
+3. **¿Añadir `prompt_veo` como cuarto campo de prompt?** — **RESUELTO (SÍ; planes 12-04, 12-06, 12-07):**
+   se añade `prompt_veo` como campo de prompt **opcional y aditivo**. El tuning Veo (cámara-primero) se
+   compila en `compile_layered_prompt` (12-04), `_materialize` rellena `prompt_veo` en cada segmento
+   (12-06), y `render_client.PROVIDERS` mapea `veo3`/`veo3_fast` → `prompt_field="prompt_veo"` (12-07).
+   Así DIRQ-06/SC6 cubre los **3 motores** (Kling/Veo/Runway), no 2. Aditivo: no rompe F3/F5 ni los 48 tests.
 
 ## Environment Availability
 
