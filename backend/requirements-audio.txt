@@ -1,0 +1,15 @@
+# VideoZero v2 · Fase 1 — extra de audio (local, sin APIs de pago).
+# Pesado y dependiente de plataforma: NO va en requirements.txt ni en CI.
+# Instalar aparte:  pip install -r requirements-audio.txt
+#
+# Además, necesitas en el PATH del sistema:
+#   - ffmpeg   (https://ffmpeg.org/ — en Windows: winget install Gyan.FFmpeg)
+#   - yt-dlp   (también instalable por pip, abajo)
+#
+# WhisperX y Demucs traen PyTorch. Para CPU basta; para GPU instala el wheel CUDA
+# de torch que corresponda a tu equipo ANTES de esto (https://pytorch.org/get-started).
+
+yt-dlp>=2025.1.0
+librosa>=0.10.2
+demucs>=4.0.1
+whisperx>=3.1.1
