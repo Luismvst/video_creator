@@ -259,8 +259,24 @@ python -m app.ingest_audio --url "https://youtu.be/XXXX" --lyrics letra.txt -o t
 ```
 Sin las herramientas instaladas, el CLI corre igual y reporta qué pasos se degradaron.
 
-**Siguiente:** v2-F2 (planner temporal real que consuma `line_timings` + beats en lugar de
-la heurística de `timed_segments.py`).
+### v2-F2 — IMPLEMENTADO (2026-05-28)
+
+Planner temporal real (8 tests verdes, puros):
+
+- `backend/app/music_planner.py`:
+  - `plan_segments_from_timings()` — ancla cortes a los tiempos reales de cada línea
+    (`line_timings`), snap a `beats`, troceo más agresivo en secciones de alta energía;
+    segmentos **contiguos que cubren [0, total]** (listos para `ffmpeg concat`).
+  - `plan_timeline()` — **punto de entrada único**: planner musical si hay tiempos,
+    si no fallback al heurístico `timed_segments.propose_timed_segments`. Devuelve
+    `(segments, source)` con `source ∈ {"music","heuristic"}`.
+  - Helpers puros testeados: `_to_intervals`, `_merge_min`, `_split_max`.
+- Forma del segmento compatible con `timed_segments` + extras `line_indices`, `source`.
+- Se comprometen también las dependencias base que faltaban en repo: `timed_segments.py`,
+  `video_cost_estimate.py` y `test_timed_segments.py`.
+
+**Siguiente:** v2-F3 — cliente de render (fal.ai → Kling 3.0) por segmento + estimador de
+coste real con tope de presupuesto, gastando solo cuando tú apruebes.
 
 ---
 
