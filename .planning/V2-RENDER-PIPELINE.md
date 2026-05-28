@@ -291,9 +291,39 @@ Cliente de render + control de coste (9 tests verdes; sin red ni FAL_KEY):
 - `backend/app/render_clip.py` — CLI (`--segments --provider --max-budget --limit --no-dry-run`).
 - Smoke E2E verificado: planner F2 → 26 segmentos (0→180s) → estimación Kling $25.2 / Veo3 $189 (aborta con tope 20).
 
-**Siguiente:** v2-F4 (keyframes encadenados para continuidad) y v2-F5 (orquestación + `ffmpeg`
-concat + mux del audio original → MP4 final). El primer gasto real ocurre cuando pongas `FAL_KEY`
-y lances `--no-dry-run --limit 1`.
+### v2-F5 — IMPLEMENTADO (2026-05-29, dry-run/local)
+
+Ensamblado final → `videoclip_final.mp4` (8 tests verdes; sin ffmpeg ni ficheros):
+
+- `backend/app/video_assembly.py`:
+  - Helpers puros: `_fmt_ts`, `build_srt` (letra→SRT desde `line_timings`),
+    `build_concat_list` (normaliza paths), `build_ffmpeg_command` (concat de vídeo +
+    **mux del audio original** + subtítulos opcionales; `-c:v copy` sin subs, re-encode con subs),
+    `resolve_clip_paths` (deriva `clip_NNN.mp4`, coherente con `render_client`).
+  - `assemble()` — dry-run/sin ffmpeg → devuelve el plan + comando + bloqueantes
+    (clips/audio/ffmpeg ausentes) sin ejecutar; con `--run` + ffmpeg ejecuta y crea el MP4.
+- `backend/app/assemble_video.py` — CLI (`--segments --clips-dir --audio --out --subtitles --run`).
+- Smoke cadena completa verificado: planner F2 (5 segs) → naming `clip_001..005.mp4` →
+  assemble construye el `ffmpeg` correcto con concat + audio + subtítulos.
+
+## Estado del pipeline v2 (resumen)
+
+| Fase | Estado | Necesita |
+|------|--------|----------|
+| F1 ingesta audio + alineación | ✅ local | yt-dlp/demucs/whisperx/librosa + ffmpeg (extra) |
+| F2 planner temporal real | ✅ | — |
+| F3 cliente render + gate coste | ✅ dry-run | `FAL_KEY` para generar |
+| **F4 keyframes encadenados** | ⬜ pendiente (continuidad, opcional) | `FAL_KEY` |
+| F5 ensamblado → MP4 final | ✅ dry-run/local | ffmpeg en PATH para `--run` |
+
+**Cadena conectada de extremo a extremo en dry-run.** Para el primer vídeo real:
+1. `pip install -r requirements-audio.txt` + ffmpeg en PATH.
+2. Conseguir `FAL_KEY`.
+3. F1 (URL+letra→tiempos) → F2 (timeline) → F3 `--no-dry-run --limit 1` (1 clip) →
+   escalar → F5 `--run` (MP4 final).
+
+Pendiente de pulido: **F4** (keyframe encadenado para coherencia entre clips) y la
+**orquestación E2E** en un solo comando (`render_clip` que encadene F1→F5).
 
 ---
 
