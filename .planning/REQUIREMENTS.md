@@ -144,4 +144,28 @@
 
 ---
 
-*Last updated: 2026-05-13 — Phase 1.5 requirements marked done in traceability*
+## v2 Requirements — Phase 12 · Cinematic prompting & direction quality (F6)
+
+> Diseño v2: [V2-RENDER-PIPELINE.md](V2-RENDER-PIPELINE.md). Todo en dry-run (lógica de texto, sin
+> gasto) salvo el render final. Restricción legal: referencias→atributos, nunca obra/artista identificable.
+
+- [ ] **DIRQ-01**: Generar una **biblia visual estructurada** (sujeto, mundo, paleta, óptica, regla de
+  iluminación, grano/DOF, atributos derivados de referencias) con system-prompt LLM y **fallback
+  heurístico** sin key; persistirla para reutilización.
+- [ ] **DIRQ-02**: **Prompt por capas** — cada prompt de segmento debe incluir, de forma verificable,
+  `[sujeto+acción de la línea] + [cámara/movimiento] + [biblia] + [negativos] + [aspect/duración]`.
+- [ ] **DIRQ-03**: **Shots ricos por defecto** — 8–15 planos con intención narrativa por sección
+  (no 2), también en la ruta heurística sin key.
+- [ ] **DIRQ-04**: **Modulación por energía/beat** — el tipo de plano y el movimiento de cámara
+  escalan con la curva de energía de F1/F2.
+- [ ] **DIRQ-05**: **Keyframe encadenado real** — pasar el último frame del clip anterior como
+  init-image al image-to-video del siguiente (camino real aislado; plan verificable en dry-run).
+- [ ] **DIRQ-06**: **Tuning de prompt por proveedor** — estructura/vocabulario óptimos por motor
+  (Kling vs Veo vs Runway).
+- [ ] **DIRQ-07**: **Reroll dirigido** — regenerar solo los segmentos marcados como flojos, no todo.
+
+**Coverage v2 (Phase 12):** DIRQ-01..07 → Phase 12 · 7 mapped · 0 unmapped ✓
+
+---
+
+*Last updated: 2026-05-29 — added v2 milestone DIRQ requirements (Phase 12 / F6).*

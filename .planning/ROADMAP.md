@@ -14,6 +14,15 @@ Construir VideoZero como **director creativo guiado por la letra**: el MVP demue
 - [x] **Phase 5: Timeline, scenes & shot list** — Campos `timeline_plan_json` / `scenes_json` / `shots_json` + UI JSON (editor visual dedicado → backlog)
 - [x] **Phase 6: Prompt compile, generation plan & export bundle** — Compile + bundle.md + prompts + shots.json/csv (MVP)
 
+### Milestone v2 — Render & Direction (URL/letra → vídeo final)
+
+- [x] **Phase 7: Audio ingest & lyric alignment (F1)** — yt-dlp + Demucs + WhisperX + librosa → line_timings + BPM/beats (local)
+- [x] **Phase 8: Music-driven timeline planner (F2)** — cortes anclados a tiempos reales de letra + snap a beat + energía
+- [x] **Phase 9: Render client & cost gate (F3)** — fal.ai (Kling 3.0) por segmento + estimación + tope de presupuesto (dry-run)
+- [x] **Phase 10: Keyframes plan (F4)** — keyframe por segmento, encadenado para continuidad (plan/dry-run)
+- [x] **Phase 11: Final assembly + E2E orchestration (F5)** — ffmpeg concat + mux audio original + SRT; `make_video` un comando
+- [ ] **Phase 12: Cinematic prompting & direction quality (F6)** — biblia inyectada por capas, shots ricos, modulación por energía, init-image real, tuning por proveedor, reroll dirigido
+
 ## Phase Details
 
 ### Phase 1: Foundation & monorepo shell
@@ -120,9 +129,79 @@ Construir VideoZero como **director creativo guiado por la letra**: el MVP demue
 
 **Plans:** MVP (`export/bundle.md`, `export/prompts.md`, `export/shots.json`, `export/shots.csv`).
 
+---
+
+## Phase Details — Milestone v2 (Render & Direction)
+
+> Fuente de verdad de diseño v2: [V2-RENDER-PIPELINE.md](V2-RENDER-PIPELINE.md). Estilo del repo:
+> stdlib, degradación elegante sin API key, helpers puros testeables, sin imports pesados a nivel
+> módulo (CI no instala el extra de audio). Restricción legal: referencias→atributos, nunca copiar
+> obra/artista identificable en prompts finales.
+
+### Phase 7: Audio ingest & lyric alignment (F1)
+
+**Goal:** Dada una URL/archivo + letra, producir tiempos reales por línea + BPM/beats/energía (local).
+**Depends on:** Phase 6 · **Status:** Complete (code, 2026-05-28)
+**Entregables:** `audio_ingest.py`, `music_analysis.py`, `ingest_audio.py`, `requirements-audio.txt`.
+
+### Phase 8: Music-driven timeline planner (F2)
+
+**Goal:** Timeline contiguo anclado a tiempos de letra + snap a beat + troceo por energía; fallback heurístico.
+**Depends on:** Phase 7 · **Status:** Complete (code, 2026-05-28)
+**Entregables:** `music_planner.py` (`plan_timeline`).
+
+### Phase 9: Render client & cost gate (F3)
+
+**Goal:** Cliente fal.ai (Kling 3.0 default) por segmento + estimación 2026 + tope de presupuesto que aborta antes de gastar.
+**Depends on:** Phase 8 · **Status:** Complete (code dry-run, 2026-05-28)
+**Entregables:** `render_client.py`, `render_clip.py`.
+
+### Phase 10: Keyframes plan (F4)
+
+**Goal:** Plan de keyframe por segmento, encadenado (referencia el anterior) para continuidad.
+**Depends on:** Phase 9 · **Status:** Complete (plan/dry-run, 2026-05-29)
+**Entregables:** `keyframes.py`.
+
+### Phase 11: Final assembly + E2E orchestration (F5)
+
+**Goal:** Ensamblado ffmpeg (concat + mux audio original + SRT) y orquestador `make_video` de un comando.
+**Depends on:** Phase 10 · **Status:** Complete (code dry-run/local, 2026-05-29)
+**Entregables:** `video_assembly.py`, `assemble_video.py`, `pipeline.py`, `make_video.py`.
+
+### Phase 12: Cinematic prompting & direction quality (F6)
+
+**Goal:** Elevar la CALIDAD de la dirección y el prompting para que el videoclip resultante sea
+coherente y de aspecto profesional, no un collage genérico — manteniendo todo en dry-run (lógica de
+texto, sin gasto) salvo el render final.
+
+**Depends on:** Phase 11
+
+**Requirements:** DIRQ-01, DIRQ-02, DIRQ-03, DIRQ-04, DIRQ-05, DIRQ-06, DIRQ-07
+
+**Mode:** standard
+
+**Success Criteria:**
+
+1. **Biblia visual estructurada** (sujeto, mundo, paleta, óptica, regla de luz, grano/DOF,
+   referencias→atributos) generada con system-prompt LLM y fallback heurístico, persistida y
+   **reutilizada en todos los segmentos**.
+2. **Prompt por capas**: cada prompt de segmento incluye, de forma verificable,
+   `[sujeto+acción de la línea] + [cámara/movimiento] + [biblia] + [negativos] + [aspect/duración]`
+   (test: la biblia aparece en cada prompt; hay bloque de negativos; hay aspect).
+3. **Shots ricos por defecto**: 8–15 planos con intención narrativa por sección (no 2), sin key.
+4. **Modulación por energía/beat**: tipo de plano y movimiento de cámara escalan con la curva de
+   energía de F1/F2 (estribillo = más movimiento; intro/puente = sostenido).
+5. **Keyframe encadenado real**: el último frame del clip anterior se pasa como init-image al
+   image-to-video del siguiente (camino real aislado; plan verificable en dry-run).
+6. **Tuning por proveedor**: estructura/vocabulario de prompt óptimos por motor (Kling vs Veo vs Runway).
+7. **Reroll dirigido**: regenerar solo los segmentos marcados, no todo el timeline.
+8. **No regresión**: suite sigue verde, sin imports pesados a nivel módulo, degradación sin key.
+
+**Plans:** TBD (este `/gsd-plan-phase 12`).
+
 ## Progress
 
-**Execution Order:** 1 → 1.5 → 2 → 3 → 4 → 5 → 6
+**Execution Order:** 1 → 1.5 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -133,3 +212,9 @@ Construir VideoZero como **director creativo guiado por la letra**: el MVP demue
 | 4. Visual bible & treatment | MVP | Complete (code) | 2026-05-13 |
 | 5. Timeline, scenes & shot list | MVP (JSON) | Complete (code) | 2026-05-13 |
 | 6. Prompt compile & export bundle | MVP | Complete (code) | 2026-05-13 |
+| 7. Audio ingest & alignment (F1) | code | Complete | 2026-05-28 |
+| 8. Music-driven planner (F2) | code | Complete | 2026-05-28 |
+| 9. Render client & cost gate (F3) | code | Complete (dry-run) | 2026-05-28 |
+| 10. Keyframes plan (F4) | code | Complete (dry-run) | 2026-05-29 |
+| 11. Final assembly + E2E (F5) | code | Complete (dry-run) | 2026-05-29 |
+| 12. Cinematic prompting & direction (F6) | — | **Planning** | — |
