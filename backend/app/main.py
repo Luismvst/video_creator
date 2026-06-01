@@ -15,10 +15,8 @@ app = FastAPI(title="VideoZero API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    # Acepta cualquier puerto de localhost/127.0.0.1 (Next puede caer en 3000, 3001, …)
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
