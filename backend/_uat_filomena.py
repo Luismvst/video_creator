@@ -213,5 +213,11 @@ R += [
 ]
 
 report = "\n".join(R)
-OUT_PATH.write_text(report, encoding="utf-8")
-print(f"[ok] {len(segments)} segmentos · informe en {OUT_PATH}")
+
+SEGMENTS_PATH = ROOT / "letras" / "filomena_segments.json"
+
+if __name__ == "__main__":
+    OUT_PATH.write_text(report, encoding="utf-8")
+    SEGMENTS_PATH.write_text(json.dumps(segments, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[ok] {len(segments)} segmentos · informe en {OUT_PATH}")
+    print(f"[ok] segments.json en {SEGMENTS_PATH} (para `python -m app.render_cli --segments`)")

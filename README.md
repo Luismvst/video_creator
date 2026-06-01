@@ -26,6 +26,21 @@ python -m app.cli_session ..\letras\mi_letra.txt --no-llm
 
 El informe incluye la **biblia visual** (sujeto, mundo, paleta, óptica, luz, grano/DOF, negativos, aspect) inyectada en **cada** prompt, los planos con su tramo de tiempo, y los prompts afinados por motor. Ejemplo real: [`letras/filomena_session.md`](letras/filomena_session.md).
 
+### Render del vídeo (dry-run por defecto)
+
+A partir de un `segments.json` (lo exporta la sesión), el render se estima y valida **sin gastar** y sin `FAL_KEY`. Solo `--run` + `FAL_KEY` llama a fal.ai de verdad.
+
+```powershell
+cd backend
+# dry-run: estima coste por proveedor, valida modelo y aplica el gate de presupuesto
+python -m app.render_cli --segments ..\letras\filomena_segments.json --provider kling --max-budget 25
+# render real — primero 1 clip para validar calidad antes de la canción entera
+$env:FAL_KEY = "<tu_clave_fal>"
+python -m app.render_cli --segments ..\letras\filomena_segments.json --provider kling --limit 1 --run
+```
+
+Proveedores: `kling` (def., mejor calidad/precio), `veo3_fast`, `veo3` (4K+audio), `runway`, `wan`. El gate **aborta antes de gastar** si el estimado supera `--max-budget`.
+
 > Si actualizas el modelo y falla SQLite por columnas nuevas, en **desarrollo** borra `backend/data/videozero.db` y reinicia la API para recrear tablas. Para producción, planifica migraciones (ver backlog en `.planning/PROJECT.md`).
 
 ## API y frontend (opcionales)
