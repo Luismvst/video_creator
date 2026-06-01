@@ -9,6 +9,8 @@ Este repositorio usa **Get Shit Done (GSD)**. Contexto vivo del producto y del t
 - **Config GSD:** [.planning/config.json](.planning/config.json)
 - **Especificación de producto:** [docs/VIDEOZERO-MASTER.md](docs/VIDEOZERO-MASTER.md)
 
-Siguiente: **`/gsd-plan-phase 2`** o implementación directa de **Fase 2** (estructura de letra + inteligencia de letra: STR/LYR). La **Fase 1.5** (Lyrics-first alignment) está cerrada en repo.
+**Uso típico = CLI** (sesión guiada en consola): `python -m app.cli_session [letra.txt] [-o informe.md]`. Es el camino principal y soportado; API y frontend son opcionales (ver `README.md`). La capa de **prompting de dirección F6** (biblia visual estructurada + prompt por capas + tuning por proveedor — `visual_bible.py`, `prompt_compile.py`) está implementada y cubierta por tests.
+
+Siguiente: pulir prompting de dirección (DIRQ-03/04/07 restantes) o conectar render real (`--run` + `FAL_KEY`).
 
 No implementar código fuera del alcance de la fase activa; respetar **Out of Scope** en `PROJECT.md`.

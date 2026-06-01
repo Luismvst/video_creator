@@ -1,8 +1,36 @@
 # VideoZero
 
-Monorepo **MVP v1**: director creativo **letra primero**. **FastAPI** + **SQLite** + **Next.js** (App Router, Tailwind). Audio opcional; OPS letra + OPS audio condicional; **Creative Lock** con snapshot; preview y exports Markdown/JSON/CSV.
+Director creativo **letra primero**: de una letra a una **dirección coherente + planos con tiempos + prompts de vídeo por capas** (Kling / Veo / Runway) y coste estimado — **sin gastar en APIs** hasta que tú quieras.
+
+**El uso típico es por CLI** (sesión guiada en consola). Hay además una API FastAPI + un frontend Next opcionales, pero el flujo principal y soportado es la línea de comandos.
+
+## Uso recomendado: sesión guiada por CLI
+
+Flujo: **letra → preguntas de dirección → biblia visual → planos con tiempos → prompts por proveedor → coste orientativo**. Funciona **sin clave de IA** (heurística local); una `OPENAI_API_KEY` solo mejora la propuesta.
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+# Pega la letra en consola…
+python -m app.cli_session
+
+# …o pásala como archivo y guarda el informe Markdown:
+python -m app.cli_session ..\letras\filomena_bucero.txt -o ..\letras\filomena_session.md
+
+# Solo heurística (sin llamar a OpenAI aunque haya clave):
+python -m app.cli_session ..\letras\mi_letra.txt --no-llm
+```
+
+El informe incluye la **biblia visual** (sujeto, mundo, paleta, óptica, luz, grano/DOF, negativos, aspect) inyectada en **cada** prompt, los planos con su tramo de tiempo, y los prompts afinados por motor. Ejemplo real: [`letras/filomena_session.md`](letras/filomena_session.md).
 
 > Si actualizas el modelo y falla SQLite por columnas nuevas, en **desarrollo** borra `backend/data/videozero.db` y reinicia la API para recrear tablas. Para producción, planifica migraciones (ver backlog en `.planning/PROJECT.md`).
+
+## API y frontend (opcionales)
+
+La API REST y el frontend Next exponen el mismo dominio para quien prefiera web; no son el camino principal.
 
 ## Requisitos
 

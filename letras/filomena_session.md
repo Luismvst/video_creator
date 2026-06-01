@@ -1,6 +1,6 @@
 # VideoZero — sesión guiada: Filomena
 
-*Dirección generada por Claude (modo director IA) sobre 120s · 7 planos.*
+*Dirección por Claude (director IA) · prompting F6 por capas · 120s · 7 planos.*
 
 ## Letra
 
@@ -38,364 +38,161 @@ blanca la triste ciudad
 }
 ```
 
-## Intake creativo
+## Biblia visual (inyectada en cada plano)
 
-```json
-{
-  "reference_notes": "Videoclip invernal inspirado en una nevada que paraliza la ciudad (tipo Filomena). Tono de melancolía serena que evoluciona hacia un brote de esperanza: la nieve como 'lienzo en blanco para volver a empezar'. Sin protagonista con rostro; la ciudad nevada y la propia nieve son los personajes. Evitar estética navideña y sentimentalismo. Sin nombres de obras, artistas ni películas reales.",
-  "style_attributes": [
-    "paleta fría azul-gris con acentos cálidos ámbar puntuales",
-    "alto key invernal, casi monocromo",
-    "cámara estable y movimientos muy lentos",
-    "planos largos contemplativos",
-    "texturas táctiles: copos, vaho, cristal empañado, lana",
-    "cierre abierto sin clímax dramático"
-  ]
-}
-```
+- **Sujeto:** Simbólico / sin rostro; la nieve y la ciudad son protagonistas
+- **Mundo / espacios:** Calle nevada, exterior urbano, ciudad paralizada
+- **Paleta:** Frío azulado dominante con calidez puntual (ventana/farola ámbar)
+- **Óptica:** lente 85mm, profundidad de campo muy corta
+- **Regla de luz:** luz fría dominante con focos cálidos motivados
+- **Grano / DOF:** grano fino tipo 16mm, foco selectivo y respiración de cámara mínima
+- **Aspect:** 16:9 · **Duración base:** 4s
 
-## Planos con tiempo en la canción y promptings
+**Atributos de estilo**
 
-### Plano 1 — 0.0s → 19.6s (duración 19.6s) · `primer-copo`
+- paleta fría azul-gris con acentos cálidos ámbar puntuales
+- alto key invernal, casi monocromo
+- cámara estable y movimientos muy lentos
+- planos largos contemplativos
+- texturas táctiles: copos, vaho, cristal empañado, lana
+- cierre abierto sin clímax dramático
 
-**Shot (estructura)**
+**Negativos (no debe aparecer)**
 
-```json
-{
-  "slug": "primer-copo",
-  "camera": "primerísimo plano macro, cámara fija, foco corto",
-  "action": "un solo copo cae a cámara lenta y se posa sobre asfalto oscuro; el negro se cubre de blanco",
-  "notes": "apertura; sin rostro; respiración lenta; frío azulado; nada de clichés navideños"
-}
-```
+- texto en pantalla o subtítulos
+- logotipos o marcas de agua
+- deformidad de manos o rostros
+- extremidades extra o anatomía imposible
+- artefactos de compresión y parpadeo temporal
+- evitar: Cliché navideño y dramatismo subrayado
 
-**Prompt — genérico**
+## Planos con tiempo en la canción y prompting por capas
 
-# Prompt pack — genérico cinematográfico
+> Cada prompt sigue el orden: sujeto+acción · cámara/movimiento · biblia (óptica/luz/paleta/grano) · negativos · aspect/duración.
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+### Plano 1 — 0.0s → 19.6s (19.6s) · `primer-copo`
 
-## 1. primer-copo
+*Intención:* abrir el clip con un gesto mínimo e hipnótico
 
-Plano: un solo copo cae a cámara lenta y se posa sobre asfalto oscuro; el negro se cubre de blanco
+**Kling** (sujeto-primero + cámara explícita)
 
-Cámara / encuadre: primerísimo plano macro, cámara fija, foco corto
+un solo copo se posa sobre asfalto oscuro; el negro se cubre de blanco. Cámara: primerísimo plano macro, cámara fija, foco corto, estática, cae el copo a cámara lenta. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: apertura; sin rostro; respiración lenta; nada de clichés navideños. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 19.6s. Mantener el sujeto estable entre cortes adyacentes.
 
-Continuidad / revisión: apertura; sin rostro; respiración lenta; frío azulado; nada de clichés navideños
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-**Prompt — Runway (orientativo MVP)**
+un solo copo se posa sobre asfalto oscuro; el negro se cubre de blanco, en Calle nevada, exterior urbano, ciudad paralizada. primerísimo plano macro, cámara fija, foco corto, estática, cae el copo a cámara lenta. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: apertura; sin rostro; respiración lenta; nada de clichés navideños. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 19.6s.
 
-# Prompt pack — orientado Runway (MVP)
+**Runway** (movimiento claro, sin texto on-screen)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. primer-copo
-
-Texto sugerido: un solo copo cae a cámara lenta y se posa sobre asfalto oscuro; el negro se cubre de blanco — primerísimo plano macro, cámara fija, foco corto. Continuidad: apertura; sin rostro; respiración lenta; frío azulado; nada de clichés navideños. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. primer-copo
-
-Prompt: un solo copo cae a cámara lenta y se posa sobre asfalto oscuro; el negro se cubre de blanco. Lente/encuadre: primerísimo plano macro, cámara fija, foco corto. Notas: apertura; sin rostro; respiración lenta; frío azulado; nada de clichés navideños. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: un solo copo se posa sobre asfalto oscuro; el negro se cubre de blanco — primerísimo plano macro, cámara fija, foco corto, estática, cae el copo a cámara lenta. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: apertura; sin rostro; respiración lenta; nada de clichés navideños. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 19.6s.
 
 ---
 
-### Plano 2 — 19.6s → 35.9s (duración 16.3s) · `venas-ciudad`
+### Plano 2 — 19.6s → 35.9s (16.3s) · `venas-ciudad`
 
-**Shot (estructura)**
+*Intención:* establecer la escala y el vacío urbano
 
-```json
-{
-  "slug": "venas-ciudad",
-  "camera": "plano cenital lento, descenso suave de grúa/dron",
-  "action": "calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas, ninguna figura",
-  "notes": "'cortan las venas de nuestra ciudad'; ciudad paralizada; gris plomizo"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas. Cámara: plano general cenital, cenital, descenso de grúa/dron muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'cortan las venas de nuestra ciudad'; ciudad paralizada. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas, en Calle nevada, exterior urbano, ciudad paralizada. plano general cenital, cenital, descenso de grúa/dron muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: 'cortan las venas de nuestra ciudad'; ciudad paralizada. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s.
 
-## 1. venas-ciudad
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas, ninguna figura
-
-Cámara / encuadre: plano cenital lento, descenso suave de grúa/dron
-
-Continuidad / revisión: 'cortan las venas de nuestra ciudad'; ciudad paralizada; gris plomizo
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. venas-ciudad
-
-Texto sugerido: calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas, ninguna figura — plano cenital lento, descenso suave de grúa/dron. Continuidad: 'cortan las venas de nuestra ciudad'; ciudad paralizada; gris plomizo. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. venas-ciudad
-
-Prompt: calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas, ninguna figura. Lente/encuadre: plano cenital lento, descenso suave de grúa/dron. Notas: 'cortan las venas de nuestra ciudad'; ciudad paralizada; gris plomizo. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: calles vacías nevadas vistas desde arriba como venas blancas de la ciudad; solo huellas — plano general cenital, cenital, descenso de grúa/dron muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'cortan las venas de nuestra ciudad'; ciudad paralizada. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 16.3s.
 
 ---
 
-### Plano 3 — 35.9s → 52.2s (duración 16.3s) · `ventana-calida`
+### Plano 3 — 35.9s → 52.2s (16.3s) · `ventana-calida`
 
-**Shot (estructura)**
+*Intención:* introducir la primera chispa de calidez/esperanza
 
-```json
-{
-  "slug": "ventana-calida",
-  "camera": "plano medio fijo desde el exterior, a través de cristal empañado",
-  "action": "una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista; nadie visible",
-  "notes": "única calidez del frame; interior cálido vs exterior frío; 'mece las penas e invita al sofá'"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista. Cámara: plano medio, fijo desde el exterior, a través de cristal empañado, estática, leve foco que respira. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: única calidez del frame; interior cálido vs exterior frío; 'invita al sofá'. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista, en Calle nevada, exterior urbano, ciudad paralizada. plano medio, fijo desde el exterior, a través de cristal empañado, estática, leve foco que respira. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: única calidez del frame; interior cálido vs exterior frío; 'invita al sofá'. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s.
 
-## 1. ventana-calida
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista; nadie visible
-
-Cámara / encuadre: plano medio fijo desde el exterior, a través de cristal empañado
-
-Continuidad / revisión: única calidez del frame; interior cálido vs exterior frío; 'mece las penas e invita al sofá'
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. ventana-calida
-
-Texto sugerido: una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista; nadie visible — plano medio fijo desde el exterior, a través de cristal empañado. Continuidad: única calidez del frame; interior cálido vs exterior frío; 'mece las penas e invita al sofá'. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. ventana-calida
-
-Prompt: una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista; nadie visible. Lente/encuadre: plano medio fijo desde el exterior, a través de cristal empañado. Notas: única calidez del frame; interior cálido vs exterior frío; 'mece las penas e invita al sofá'. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: una ventana iluminada en ámbar sobre la fachada nevada; vaho en el cristal, una manta de lana entrevista — plano medio, fijo desde el exterior, a través de cristal empañado, estática, leve foco que respira. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: única calidez del frame; interior cálido vs exterior frío; 'invita al sofá'. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 16.3s.
 
 ---
 
-### Plano 4 — 52.2s → 69.3s (duración 17.1s) · `nieva-sin-parar`
+### Plano 4 — 52.2s → 69.3s (17.1s) · `nieva-sin-parar`
 
-**Shot (estructura)**
+*Intención:* punto más bajo: quietud y peso emocional
 
-```json
-{
-  "slug": "nieva-sin-parar",
-  "camera": "plano general estático, gran angular",
-  "action": "plaza urbana bajo nevada densa y constante; una farola encendida; el tiempo parece detenido",
-  "notes": "'hace ya meses que nieva sin parar'; suspensión temporal; calidez puntual de la farola"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+plaza urbana bajo nevada constante; una farola encendida; el tiempo parece detenido. Cámara: plano general, estático, gran angular, estática con nevada densa cruzando el cuadro. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'hace ya meses que nieva sin parar'; suspensión temporal. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 17.1s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+plaza urbana bajo nevada constante; una farola encendida; el tiempo parece detenido, en Calle nevada, exterior urbano, ciudad paralizada. plano general, estático, gran angular, estática con nevada densa cruzando el cuadro. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: 'hace ya meses que nieva sin parar'; suspensión temporal. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 17.1s.
 
-## 1. nieva-sin-parar
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: plaza urbana bajo nevada densa y constante; una farola encendida; el tiempo parece detenido
-
-Cámara / encuadre: plano general estático, gran angular
-
-Continuidad / revisión: 'hace ya meses que nieva sin parar'; suspensión temporal; calidez puntual de la farola
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. nieva-sin-parar
-
-Texto sugerido: plaza urbana bajo nevada densa y constante; una farola encendida; el tiempo parece detenido — plano general estático, gran angular. Continuidad: 'hace ya meses que nieva sin parar'; suspensión temporal; calidez puntual de la farola. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. nieva-sin-parar
-
-Prompt: plaza urbana bajo nevada densa y constante; una farola encendida; el tiempo parece detenido. Lente/encuadre: plano general estático, gran angular. Notas: 'hace ya meses que nieva sin parar'; suspensión temporal; calidez puntual de la farola. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: plaza urbana bajo nevada constante; una farola encendida; el tiempo parece detenido — plano general, estático, gran angular, estática con nevada densa cruzando el cuadro. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'hace ya meses que nieva sin parar'; suspensión temporal. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 17.1s.
 
 ---
 
-### Plano 5 — 69.3s → 85.6s (duración 16.3s) · `aliento-frio`
+### Plano 5 — 69.3s → 85.6s (16.3s) · `aliento-frio`
 
-**Shot (estructura)**
+*Intención:* intensificar el frío justo antes del giro
 
-```json
-{
-  "slug": "aliento-frio",
-  "camera": "plano detalle a la altura del suelo, cámara fija",
-  "action": "una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie",
-  "notes": "'frío asombro, frío, helados calados'; textura táctil; sin protagonista"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie. Cámara: plano detalle, a la altura del suelo, cámara fija, estática, cristales formándose en time-lapse sutil. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie, en Calle nevada, exterior urbano, ciudad paralizada. plano detalle, a la altura del suelo, cámara fija, estática, cristales formándose en time-lapse sutil. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s.
 
-## 1. aliento-frio
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie
-
-Cámara / encuadre: plano detalle a la altura del suelo, cámara fija
-
-Continuidad / revisión: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. aliento-frio
-
-Texto sugerido: una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie — plano detalle a la altura del suelo, cámara fija. Continuidad: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. aliento-frio
-
-Prompt: una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie. Lente/encuadre: plano detalle a la altura del suelo, cámara fija. Notas: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: una nube de vaho cruza el encuadre helado; cristales de hielo se forman sobre una superficie — plano detalle, a la altura del suelo, cámara fija, estática, cristales formándose en time-lapse sutil. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'frío asombro, frío, helados calados'; textura táctil; sin protagonista. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 16.3s.
 
 ---
 
-### Plano 6 — 85.6s → 101.9s (duración 16.3s) · `lienzo-blanco`
+### Plano 6 — 85.6s → 101.9s (16.3s) · `lienzo-blanco`
 
-**Shot (estructura)**
+*Intención:* punto de giro: de melancolía a esperanza
 
-```json
-{
-  "slug": "lienzo-blanco",
-  "camera": "plano medio, travelling lateral muy lento",
-  "action": "la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo",
-  "notes": "'pinta de blanco un lienzo para volver a empezar'; punto de giro hacia la esperanza; primer respiro de luz"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo. Cámara: plano medio, plano medio, travelling lateral muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'pinta de blanco un lienzo para volver a empezar'; primer respiro de luz. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo, en Calle nevada, exterior urbano, ciudad paralizada. plano medio, plano medio, travelling lateral muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: 'pinta de blanco un lienzo para volver a empezar'; primer respiro de luz. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 16.3s.
 
-## 1. lienzo-blanco
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo
-
-Cámara / encuadre: plano medio, travelling lateral muy lento
-
-Continuidad / revisión: 'pinta de blanco un lienzo para volver a empezar'; punto de giro hacia la esperanza; primer respiro de luz
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. lienzo-blanco
-
-Texto sugerido: la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo — plano medio, travelling lateral muy lento. Continuidad: 'pinta de blanco un lienzo para volver a empezar'; punto de giro hacia la esperanza; primer respiro de luz. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. lienzo-blanco
-
-Prompt: la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo. Lente/encuadre: plano medio, travelling lateral muy lento. Notas: 'pinta de blanco un lienzo para volver a empezar'; punto de giro hacia la esperanza; primer respiro de luz. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: la nieve recién caída cubre una calle hasta volverla un lienzo blanco intacto; una sola huella se insinúa al fondo — plano medio, plano medio, travelling lateral muy lento. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: 'pinta de blanco un lienzo para volver a empezar'; primer respiro de luz. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 16.3s.
 
 ---
 
-### Plano 7 — 101.9s → 120.0s (duración 18.1s) · `ciudad-blanca-eco`
+### Plano 7 — 101.9s → 120.0s (18.1s) · `ciudad-blanca-eco`
 
-**Shot (estructura)**
+*Intención:* cerrar en suspensión esperanzada, sin subrayar
 
-```json
-{
-  "slug": "ciudad-blanca-eco",
-  "camera": "plano general amplio, cámara fija, leve desenfoque",
-  "action": "la ciudad entera blanca al amanecer; la nieve sigue cayendo suave y el plano se sostiene sin resolverse; un punto de luz cálida late a lo lejos",
-  "notes": "cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente, no subrayada"
-}
-```
+**Kling** (sujeto-primero + cámara explícita)
 
-**Prompt — genérico**
+la ciudad entera blanca al amanecer; la nieve sigue cayendo suave; un punto de luz cálida late a lo lejos. Cámara: plano general amplio, cámara fija, leve desenfoque, estática que se sostiene sin resolver. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 18.1s. Mantener el sujeto estable entre cortes adyacentes.
 
-# Prompt pack — genérico cinematográfico
+**Veo / genérico** (descriptivo cinematográfico + ambiente sonoro)
 
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
+la ciudad entera blanca al amanecer; la nieve sigue cayendo suave; un punto de luz cálida late a lo lejos, en Calle nevada, exterior urbano, ciudad paralizada. plano general amplio, cámara fija, leve desenfoque, estática que se sostiene sin resolver. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Ambiente sonoro coherente con la escena (sin música licenciada ni voces reconocibles). Continuidad: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. 16:9, 18.1s.
 
-## 1. ciudad-blanca-eco
+**Runway** (movimiento claro, sin texto on-screen)
 
-Plano: la ciudad entera blanca al amanecer; la nieve sigue cayendo suave y el plano se sostiene sin resolverse; un punto de luz cálida late a lo lejos
-
-Cámara / encuadre: plano general amplio, cámara fija, leve desenfoque
-
-Continuidad / revisión: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente, no subrayada
-
-**Prompt — Runway (orientativo MVP)**
-
-# Prompt pack — orientado Runway (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. ciudad-blanca-eco
-
-Texto sugerido: la ciudad entera blanca al amanecer; la nieve sigue cayendo suave y el plano se sostiene sin resolverse; un punto de luz cálida late a lo lejos — plano general amplio, cámara fija, leve desenfoque. Continuidad: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente, no subrayada. Evitar texto on-screen ilegible; priorizar movimiento de cámara claro.
-
-**Prompt — Kling (orientativo MVP)**
-
-# Prompt pack — orientado Kling (MVP)
-
-> Atributos de estilo y continuidad deben venir de la Visual Bible; no pegar obras o artistas identificables.
-
-## 1. ciudad-blanca-eco
-
-Prompt: la ciudad entera blanca al amanecer; la nieve sigue cayendo suave y el plano se sostiene sin resolverse; un punto de luz cálida late a lo lejos. Lente/encuadre: plano general amplio, cámara fija, leve desenfoque. Notas: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente, no subrayada. Mantener sujeto principal estable entre cortes adyacentes cuando aplique.
+Texto sugerido: la ciudad entera blanca al amanecer; la nieve sigue cayendo suave; un punto de luz cálida late a lo lejos — plano general amplio, cámara fija, leve desenfoque, estática que se sostiene sin resolver. óptica: lente 85mm, profundidad de campo muy corta; luz: luz fría dominante con focos cálidos motivados; paleta: Frío azulado dominante con calidez puntual (ventana/farola ámbar); grano fino tipo 16mm, foco selectivo y respiración de cámara mínima. Continuidad: cierre abierto, eco emocional; 'blanca la triste ciudad'; esperanza latente. Negativos: texto en pantalla o subtítulos, logotipos o marcas de agua, deformidad de manos o rostros, extremidades extra o anatomía imposible, artefactos de compresión y parpadeo temporal, evitar: Cliché navideño y dramatismo subrayado. Priorizar movimiento de cámara legible y evitar texto on-screen. 16:9, 18.1s.
 
 ---
 
@@ -403,7 +200,7 @@ Prompt: la ciudad entera blanca al amanecer; la nieve sigue cayendo suave y el p
 
 > Estimación indicativa; las tarifas reales dependen del proveedor, resolución y plan.
 
-Tarifas usadas (USD/s, configurables por `VIDEOZERO_EST_USD_PER_SEC_*`):
+Tarifas (USD/s, configurables por `VIDEOZERO_EST_USD_PER_SEC_*`):
 
 ```json
 {
@@ -422,3 +219,10 @@ Tarifas usadas (USD/s, configurables por `VIDEOZERO_EST_USD_PER_SEC_*`):
   "kling": 12.0
 }
 ```
+
+## Recomendación de motor para este caso
+
+- **Kling** — mejor calidad/precio para planos contemplativos y consistencia de sujeto. Por defecto.
+- **Veo 3** — si quieres ambiente sonoro generado y máxima fidelidad cinematográfica (más caro).
+- **Runway Gen-4** — alternativa con control de movimiento de cámara claro.
+- Encadenado de keyframes (último frame → init-image del siguiente) recomendado para continuidad de nevada.

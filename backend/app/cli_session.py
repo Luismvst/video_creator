@@ -18,6 +18,7 @@ from typing import Callable, Optional
 from .onboarding_ai import build_onboarding_package
 from .timed_segments import propose_timed_segments
 from .video_cost_estimate import estimate_segment_costs_usd
+from .visual_bible import bible_to_markdown, build_visual_bible
 
 
 def _read_multiline_lyrics() -> str:
@@ -153,6 +154,15 @@ def main(argv: Optional[list[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    # Consola Windows: evitar UnicodeEncodeError con acentos/flechas (cp1252).
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            try:
+                reconfigure(encoding="utf-8")
+            except (ValueError, OSError):
+                pass
+
     print(
         "\nVideoZero — modo consola\n"
         "Flujo: letra → preguntas de dirección → propuesta automática de tiempos por plano "
@@ -193,7 +203,21 @@ def main(argv: Optional[list[str]] = None) -> int:
     if not isinstance(shots, list):
         shots = []
 
-    segments = propose_timed_segments(total_sec, shots, title=title)
+    # DIRQ-01: biblia visual estructurada, inyectada en cada prompt por capas.
+    try:
+        intake = json.loads(pkg.get("creative_intake_json") or "{}")
+        style_attrs = intake.get("style_attributes") or []
+    except json.JSONDecodeError:
+        style_attrs = []
+    bible = build_visual_bible(
+        brief=brief,
+        lyrics=lyrics,
+        director_answers=answers,
+        style_attributes=style_attrs,
+        mood=answers.get("mood"),
+    )
+
+    segments = propose_timed_segments(total_sec, shots, title=title, bible=bible)
     costs = estimate_segment_costs_usd(segments)
 
     report_lines: list[str] = [
@@ -212,6 +236,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         "```text",
         brief,
         "```",
+        "",
+        bible_to_markdown(bible).replace("# Biblia visual", "## Biblia visual"),
         "",
         "## Director (JSON)",
         "",

@@ -27,10 +27,14 @@ def propose_timed_segments(
     shots: list[dict[str, Any]],
     *,
     title: Optional[str] = None,
+    bible: Optional[dict[str, Any]] = None,
 ) -> list[dict[str, Any]]:
     """
     Reparte total_seconds entre shots con pesos heurísticos (respiración narrativa).
     Cada segmento: start_sec, end_sec, duration_sec, shot, prompts por proveedor.
+
+    Si se pasa `bible` (Biblia visual DIRQ-01), se inyecta en cada prompt por capas y la
+    duración real del segmento entra en la capa técnica del prompt.
     """
     total = max(0.0, float(total_seconds))
     if not shots or total <= 0:
@@ -55,15 +59,17 @@ def propose_timed_segments(
         if i == n - 1:
             t1 = total
             dur = round(t1 - t0, 1)
+        # El prompt por capas incluye la duración real del plano en su capa técnica.
+        sh_timed = {**sh, "duration_sec": round(dur, 1)}
         seg = {
             "index": i + 1,
             "start_sec": round(t0, 1),
             "end_sec": round(t1, 1),
             "duration_sec": round(dur, 1),
             "shot": dict(sh),
-            "prompt_generic": compile_prompt_markdown([sh], "generic").strip(),
-            "prompt_runway": compile_prompt_markdown([sh], "runway").strip(),
-            "prompt_kling": compile_prompt_markdown([sh], "kling").strip(),
+            "prompt_generic": compile_prompt_markdown([sh_timed], "generic", bible=bible).strip(),
+            "prompt_runway": compile_prompt_markdown([sh_timed], "runway", bible=bible).strip(),
+            "prompt_kling": compile_prompt_markdown([sh_timed], "kling", bible=bible).strip(),
         }
         if title:
             seg["work_title"] = title

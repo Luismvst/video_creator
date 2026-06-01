@@ -70,6 +70,64 @@ def _keyword_attrs(brief: str) -> list[str]:
     return found[:5]
 
 
+# Vocabulario de cámara para planos ricos sin LLM (DIRQ-03).
+_SHOT_SIZES = [
+    "plano general",
+    "plano medio",
+    "primer plano",
+    "plano detalle",
+    "plano general amplio",
+    "plano americano",
+]
+_MOVES = [
+    "cámara fija",
+    "travelling lateral lento",
+    "push-in suave",
+    "paneo lento",
+    "descenso de grúa lento",
+    "cámara al hombro contenida",
+]
+
+
+def _slugify(text: str, idx: int) -> str:
+    words = re.findall(r"[a-záéíóúñ0-9]+", (text or "").lower())
+    base = "-".join(words[:3]) or f"plano-{idx}"
+    return base[:40]
+
+
+def _heuristic_shots(lyrics_text: str) -> list[dict[str, str]]:
+    """8–12 planos con intención narrativa, repartidos por la letra (sin LLM)."""
+    lines = [ln.strip() for ln in _split_lines(lyrics_text)]
+    spans = suggest_section_spans(lyrics_text)
+    seeds: list[str] = []
+    if len(spans) >= 2:
+        for label, _kind, a, b in spans:
+            seed = next((lines[i] for i in range(a, b + 1) if 0 <= i < len(lines) and lines[i]), "")
+            seeds.append(seed or label)
+    else:
+        seeds = [ln for ln in lines if ln]
+    seeds = seeds[:12] or ["imagen coherente con la canción"]
+
+    n = len(seeds)
+    shots: list[dict[str, str]] = []
+    for idx, seed in enumerate(seeds):
+        size = _SHOT_SIZES[idx % len(_SHOT_SIZES)]
+        move = _MOVES[idx % len(_MOVES)]
+        intent = "apertura" if idx == 0 else ("cierre" if idx == n - 1 else "desarrollo")
+        shots.append(
+            {
+                "slug": _slugify(seed, idx + 1),
+                "shot_size": size,
+                "camera": size,
+                "movement": move,
+                "action": f"imagen evocada por la línea: «{seed}»",
+                "notes": "heredar biblia visual; sin texto en pantalla",
+                "intent": intent,
+            }
+        )
+    return shots
+
+
 def heuristic_onboarding_package(
     lyrics_text: str,
     brief: str,
@@ -116,20 +174,7 @@ def heuristic_onboarding_package(
         {"title": "2. Bloquear dirección", "detail": "Creative Lock cuando estés conforme."},
         {"title": "3. Exportar y generar fuera", "detail": "Usar bundle + prompts en tu herramienta de vídeo."},
     ]
-    shots = [
-        {
-            "slug": "apertura",
-            "camera": "plano medio suave",
-            "action": "presentar al protagonista o espacio principal alineado con la primera imagen de la letra",
-            "notes": "heredar atributos de estilo sugeridos",
-        },
-        {
-            "slug": "giro",
-            "camera": "corte a detalle simbólico",
-            "action": "refuerzo visual del giro emocional del segundo bloque",
-            "notes": "sin texto ilegible en pantalla",
-        },
-    ]
+    shots = _heuristic_shots(lyrics_text)
     return {
         "creative_intake_json": json.dumps(intake, ensure_ascii=False),
         "director_answers_json": json.dumps(director, ensure_ascii=False),
