@@ -232,6 +232,16 @@ class ProjectDetailRead(ProjectRead):
     song: Optional[SongRead] = None
 
 
+class OnboardingApplyBriefBody(BaseModel):
+    brief: str = Field(min_length=1, max_length=8000)
+    mode: str = Field(default="auto", description="auto | heuristic | llm")
+
+
+class OnboardingBriefResult(BaseModel):
+    project: ProjectDetailRead
+    hint: str
+
+
 class AnalysisEnqueueResult(BaseModel):
     status: str
     message: str

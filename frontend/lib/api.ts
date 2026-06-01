@@ -147,6 +147,27 @@ export async function enqueueAnalysis(
   return parseJson(res);
 }
 
+export type OnboardingBriefResult = { project: ProjectDetail; hint: string };
+
+export async function applyOnboardingBrief(
+  projectId: number,
+  body: { brief: string; mode?: "auto" | "heuristic" | "llm" },
+): Promise<OnboardingBriefResult> {
+  const res = await fetch(`${API_BASE}/projects/${projectId}/song/onboarding/apply-brief`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return parseJson<OnboardingBriefResult>(res);
+}
+
+export async function applyOnboardingSections(projectId: number): Promise<ProjectDetail> {
+  const res = await fetch(`${API_BASE}/projects/${projectId}/song/onboarding/apply-sections`, {
+    method: "POST",
+  });
+  return parseJson<ProjectDetail>(res);
+}
+
 export async function getLyricLines(projectId: number): Promise<{ lines: { index: number; text: string }[] }> {
   const res = await fetch(`${API_BASE}/projects/${projectId}/song/lines`, { cache: "no-store" });
   return parseJson(res);

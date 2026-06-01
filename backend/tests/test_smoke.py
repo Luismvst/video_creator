@@ -90,6 +90,37 @@ def test_documents_preview(client: TestClient) -> None:
     assert "Visual Bible" in data["visual_bible_markdown"]
 
 
+def test_onboarding_apply_brief_heuristic(client: TestClient) -> None:
+    r = client.post("/projects", json={"name": "onb"})
+    pid = r.json()["id"]
+    client.patch(
+        f"/projects/{pid}/song",
+        json={"lyrics_text": "línea uno\n\nlínea dos", "lyrics_rights_confirmed": True},
+    )
+    q = client.post(
+        f"/projects/{pid}/song/onboarding/apply-brief",
+        json={"brief": "neón, lluvia, noche en la ciudad", "mode": "heuristic"},
+    )
+    assert q.status_code == 200
+    body = q.json()
+    assert "hint" in body
+    assert body["project"]["song"]["creative_intake_json"]
+    assert body["project"]["song"]["shots_json"]
+
+
+def test_onboarding_apply_sections(client: TestClient) -> None:
+    r = client.post("/projects", json={"name": "sec"})
+    pid = r.json()["id"]
+    client.patch(
+        f"/projects/{pid}/song",
+        json={"lyrics_text": "a\n\nb\n\nc", "lyrics_rights_confirmed": True},
+    )
+    s = client.post(f"/projects/{pid}/song/onboarding/apply-sections")
+    assert s.status_code == 200
+    secs = s.json()["song"]["sections"]
+    assert len(secs) >= 2
+
+
 def test_uat_neon_urban_breakup_journey(client: TestClient) -> None:
     """End-to-end API walkthrough for docs/UAT-NEON-URBAN-BREAKUP.md (neon urban breakup)."""
     lyrics = (
